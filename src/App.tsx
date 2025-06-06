@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import ListaCategorias from './components/categorias/listacategorias/ListaCategorias'
+import ListaCategorias from './pages/categorias/ListaCategorias'
 import CadastroCategorias from './components/categorias/cadastrocategorias/CadastroCategorias'
 import Login from './pages/login/Login'
 import Cadastro from './pages/cadastro/Cadastro'

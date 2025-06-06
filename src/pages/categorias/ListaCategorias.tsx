@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type Categoria from "../../../models/Categoria";
+import type Categoria from "../../models/Categoria";
 
 function ListaCategorias() {
     const [categorias] = useState<Categoria[]>([])
