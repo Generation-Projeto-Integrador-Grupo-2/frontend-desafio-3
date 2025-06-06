@@ -2,21 +2,28 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ListaCategorias from './components/categorias/listacategorias/ListaCategorias'
 import CadastroCategorias from './components/categorias/cadastrocategorias/CadastroCategorias'
+import Login from './pages/login/Login'
+import Cadastro from './pages/cadastro/Cadastro'
+import { AuthProvider } from './contexts/AuthContext'
+import { ToastContainer } from 'react-toastify'
+
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="min-h-[80vh]">
+      <AuthProvider> 
+              <div className="min-h-[80vh]">
+        <ToastContainer/>
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/home" element={<Home />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/login" element={<Login />} />
             <Route path='/categorias' element={<ListaCategorias />} />
             <Route path='/categorias/cadastrar' element={<CadastroCategorias />} />
           </Routes>
         </div>
+        </AuthProvider>
       </BrowserRouter>
     </>
   )
