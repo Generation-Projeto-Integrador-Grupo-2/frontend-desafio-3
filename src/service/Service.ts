@@ -1,7 +1,10 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: 'https://backend-desafio-3.onrender.com'
+    baseURL: 'https://backend-desafio-3.onrender.com',  headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
 });
 
 export const cadastrarUsuario = async (url: string, dados: Object, setDados: Function) => {
