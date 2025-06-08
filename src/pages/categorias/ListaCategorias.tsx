@@ -62,11 +62,11 @@ export default function ListaCategorias() {
                 </div>
             </div>
             <div className="flex">
-                <Link to={`/editarproduto/${categoria.id}`}
+                <Link to={`/editarcategorias/${categoria.id}`}
                     className='w-full text-slate-100 bg-indigo-400 hover:bg-indigo-800 flex items-center justify-center py-2'>
                     <button>Editar</button>
                 </Link>
-                <Link to={`/deletarpostagem/${categoria.id}`}
+                <Link to={`/deletarcategorias/${categoria.id}`}
                     className='text-white bg-red-400 hover:bg-red-700 w-full flex items-center justify-center'>
                     <button>Deletar</button>
                 </Link>
