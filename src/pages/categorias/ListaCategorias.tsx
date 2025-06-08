@@ -1,44 +1,81 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type Categoria from "../../models/Categoria";
+import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import { buscar } from "../../service/Service";
+import { ToastAlerta } from "../../utils/ToastAlerta";
+import { DNA } from "react-loader-spinner";
+export default function ListaCategorias() {
+    const navigate = useNavigate();
+    const [categorias, setCategorias] = useState<Categoria[]>([])
+    const { usuario, handleLogout } = useContext(AuthContext);
+    const token = usuario.token;
 
-function ListaCategorias() {
-    const [categorias] = useState<Categoria[]>([])
-
+    async function buscarCategorias() {
+            try {
+                await buscar('/categorias', setCategorias, {
+                    headers: {
+                        Authorization: token,
+                    },
+                })
+            } catch (error: any) {
+                if (error.toString().includes('403')) {
+                    handleLogout()
+                }
+            }
+        }
+        useEffect(() => {
+                if (token === '') {
+                    ToastAlerta('Você precisa estar logado', 'erro')
+                    navigate('/');
+                }
+            }, [token])
+        
+            useEffect(() => {
+                buscarCategorias()
+            }, [categorias.length])
     return (
-        <div className="min-h-screen bg-[#f3f4f6] py-8 px-4">
-            <div className="max-w-7xl mx-auto">
-                <h1 className="text-3xl font-bold text-[#374151] mb-8">
-                    Categorias
-                </h1>
-                {categorias.length === 0 ? (
-                    <p className="text-[#6b7280] text-sm">Nenhuma categoria cadastrada.</p>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <>
+            {categorias.length === 0 && (
+                <DNA
+                    visible={true}
+                    height="200"
+                    width="200"
+                    ariaLabel="dna-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="dna-wrapper mx-auto"
+                />
+            )}
+            <div className="flex justify-center w-full my-4">
+                <div className="container flex flex-col mx-2">
+                    <div className='container mx-auto my-4 
+                        grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
+                    >
                         {categorias.map((categoria) => (
-                            <div key={categoria.id} className="bg-white p-6 rounded-lg shadow">
-                                <p className="text-[#6b7280] text-sm font-semibold">
-                                    Nome: {categoria.nome}
-                                </p>
-                                <p className="text-[#6b7280] text-sm">
-                                    Descrição: {categoria.descricao}
-                                </p>
-                                <p className="text-[#6b7280] text-sm">
-                                    Saudável: {categoria.saudavel ? "Sim" : "Não"}
-                                </p>
-                                {categoria.imagemUrl && (
-                                    <img
-                                        src={categoria.imagemUrl}
-                                        alt={categoria.nome}
-                                        className="w-32 h-32 object-cover rounded-lg mt-4"
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                            <div className='border-slate-900 border 
+            flex flex-col rounded overflow-hidden justify-between'>
+
+            <div>
+                <div className='p-4 '>
+                    <h4 className='text-lg font-semibold uppercase'>{categoria.nome}</h4>
+                    <p>{categoria.descricao}</p>
+                </div>
+            </div>
+            <div className="flex">
+                <Link to={`/editarproduto/${categoria.id}`}
+                    className='w-full text-slate-100 bg-indigo-400 hover:bg-indigo-800 flex items-center justify-center py-2'>
+                    <button>Editar</button>
+                </Link>
+                <Link to={`/deletarpostagem/${categoria.id}`}
+                    className='text-white bg-red-400 hover:bg-red-700 w-full flex items-center justify-center'>
+                    <button>Deletar</button>
+                </Link>
             </div>
         </div>
-    );
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </>
+    )
 }
-
-export default ListaCategorias;

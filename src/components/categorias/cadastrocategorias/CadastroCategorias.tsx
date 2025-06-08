@@ -1,174 +1,166 @@
-import React, { useState } from "react";
+import { useContext, useEffect, useState, type ChangeEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import type Categoria from "../../../models/Categoria";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { ToastAlerta } from "../../../utils/ToastAlerta";
+import { atualizar, buscar, cadastrar } from "../../../service/Service";
+import { RotatingLines } from "react-loader-spinner";
 
-function CadastroCategorias() {
-  const [categoria, setCategoria] = useState<Categoria>({
-    id: 0,
-    nome: "",
-    descricao: "",
-    saudavel: false,
-    imagemUrl: "",
-    produto: undefined,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [mensagem, setMensagem] = useState("");
+export default function CadastroCategorias() {
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setMensagem("");
-    try {
-      const response = await fetch("/categorias/cadastrar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(categoria),
-      });
-      if (response.ok) {
-        setMensagem("Categoria cadastrada com sucesso!");
-        setCategoria({
-          id: 0,
-          nome: "",
-          descricao: "",
-          saudavel: false,
-          imagemUrl: "",
-          produto: undefined,
-        });
-      } else {
-        setMensagem("Erro ao cadastrar categoria.");
-      }
-    } catch (error) {
-      setMensagem("Erro ao cadastrar categoria.");
+    const navigate = useNavigate();
+
+    const [categoria, setCategorias] = useState<Categoria>({
+      nome: "",
+      descricao: "",
+      imagemUrl: "",
+      saudavel: false
+    } as Categoria)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const { usuario, handleLogout } = useContext(AuthContext)
+    const token = usuario.token
+
+    const { id } = useParams<{ id: string }>();
+
+    async function buscarPorId(id: string) {
+        try {
+            await buscar(`/categorias/${id}`, setCategorias, {
+                headers: { Authorization: token }
+            })
+        } catch (error: any) {
+            if (error.toString().includes('403')) {
+                handleLogout()
+            }
+        }
     }
-    setIsLoading(false);
-  };
 
-  return (
-    <div className="min-h-screen bg-[#f3f4f6] py-8 px-4">
-      <div className="mx-auto max-w-xl transition-all duration-300">
-        <div className="flex flex-col gap-8">
-          {/* Formulário */}
-          <div className="bg-white p-8 rounded-lg shadow w-full">
-            <h1 className="text-3xl font-bold text-[#374151] mb-6 text-center">
-              Cadastro de Categoria
+    useEffect(() => {
+        if (token === '') {
+            ToastAlerta('Você precisa estar logado!', 'erro')
+            navigate('/')
+        }
+    }, [token])
+
+    useEffect(() => {
+        if (id !== undefined) {
+            buscarPorId(id)
+        }
+    }, [id])
+
+    function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
+        setCategorias({
+            ...categoria,
+            [name]: name === 'saudavel' ? value === 'true' : value
+        });
+    }
+
+    function retornar() {
+        navigate("/categorias")
+    }
+
+    async function novaCategoria(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault()
+      setIsLoading(true)
+
+      if (id !== undefined) {
+        try {
+          await atualizar(`/categorias`, categoria, setCategorias, {
+            headers: { 'Authorization': token }
+          })
+          ToastAlerta('Categoria atualizada com sucesso!', 'sucesso')
+        } catch (error: any) {
+          if (error.toString().includes('403')) {
+            handleLogout();
+          } else {
+            ToastAlerta('Erro ao atualizar a categoria.', 'erro')
+          }
+
+        }
+      } else {
+        try {
+          await cadastrar(`/categorias`, categoria, setCategorias, {
+            headers: { 'Authorization': token }
+          })
+          ToastAlerta('Categoria cadastrada com sucesso!', 'sucesso')
+        } catch (error: any) {
+          if (error.toString().includes('403')) {
+            handleLogout();
+          } else {
+            ToastAlerta('Erro ao cadastrar categoria.', 'erro')
+          }
+
+        }
+      }
+
+      setIsLoading(false)
+      retornar()
+    }
+
+    return (
+        <div className="container flex flex-col items-center justify-center mx-auto">
+            <h1 className="text-4xl text-center my-8">
+                {id === undefined ? 'Cadastrar Categoria' : 'Editar Categoria'}
             </h1>
 
-            <div className="text-center mb-8">
-              <p className="text-[#6b7280]">
-                Preencha os dados abaixo para cadastrar uma nova categoria
-              </p>
-            </div>
-
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <label
-                  className="block text-[#374151] font-medium mb-2"
-                  htmlFor="nome"
-                >
-                  Nome da Categoria
-                </label>
-                <input
-                  type="text"
-                  id="nome"
-                  value={categoria.nome}
-                  onChange={(e) =>
-                    setCategoria({ ...categoria, nome: e.target.value })
-                  }
-                  className="w-full p-3 border border-[#6b7280] rounded-md focus:outline-none focus:ring-2 focus:ring-[#84cc16]"
-                  placeholder="Digite o nome da categoria"
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className="block text-[#374151] font-medium mb-2"
-                  htmlFor="descricao"
-                >
-                  Descrição
-                </label>
-                <textarea
-                  id="descricao"
-                  value={categoria.descricao}
-                  onChange={(e) =>
-                    setCategoria({ ...categoria, descricao: e.target.value })
-                  }
-                  className="w-full p-3 border border-[#6b7280] rounded-md focus:outline-none focus:ring-2 focus:ring-[#84cc16]"
-                  placeholder="Digite uma descrição para a categoria"
-                  required
-                />
-              </div>
-                <div className="flex items-center mb-4">
+            <form className="w-1/2 flex flex-col gap-4" onSubmit={novaCategoria}>
+                <div className="flex flex-col gap-2">
+                    <label htmlFor="nome">Nome da Categoria</label>
                     <input
-                    type="checkbox"
-                    id="saudavel"
-                    checked={categoria.saudavel}
-                    onChange={(e) =>
-                        setCategoria({
-                        ...categoria,
-                        saudavel: e.target.checked,
-                        })
-                    }
-                    className="h-4 w-4 text-[#84cc16] border-gray-300 rounded focus:ring-[#84cc16]"
+                        type="text"
+                        placeholder="Nome da Categoria"
+                        name='nome'
+                        className="border-2 border-slate-700 rounded p-2"
+                        value={categoria.nome}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
-                    <label
-                    htmlFor="saudavel"
-                    className="ml-2 text-[#374151] font-medium"
+                    <label htmlFor="descricao">Descrição do Tema</label>
+                    <input
+                        type="text"
+                        placeholder="Descreva aqui seu tema"
+                        name='descricao'
+                        className="border-2 border-slate-700 rounded p-2"
+                        value={categoria.descricao}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
+                    />
+                    <label htmlFor="imagemUrl">Imagem da Categoria</label>
+                    <input
+                        type="text"
+                        placeholder="Imagem da Categoria"
+                        name='imagemUrl'
+                        className="border-2 border-slate-700 rounded p-2"
+                        value={categoria.imagemUrl}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
+                    />
+                    <label htmlFor="saudavel">Saudável?</label>
+                    <select
+                        name="saudavel"
+                        className="border-2 border-slate-700 rounded p-2"
+                        value={categoria.saudavel ? 'true' : 'false'}
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => atualizarEstado(e as any)}
                     >
-                    Categoria Saudável
-                    </label>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
                 </div>
-                <div>
-                <label
-                  className="block text-[#374151] font-medium mb-2"
-                  htmlFor="imagemUrl"
-                >
-                    URL da Imagem
-                </label>
-                <input
-                  type="text"
-                  id="imagemUrl"
-                  value={categoria.imagemUrl}
-                  onChange={(e) =>
-                    setCategoria({ ...categoria, imagemUrl: e.target.value })
-                  }
-                  className="w-full p-3 border border-[#6b7280] rounded-md focus:outline-none focus:ring-2 focus:ring-[#84cc16]"
-                  placeholder="Digite a URL da imagem da categoria"
-                    required
-                />
-                </div>
+                <button
+                    className="rounded text-slate-100 bg-indigo-400 
+                               hover:bg-indigo-800 w-1/2 py-2 mx-auto flex justify-center"
+                    type="submit">
+                    {isLoading ?
+                        <RotatingLines
+                            strokeColor="white"
+                            strokeWidth="5"
+                            animationDuration="0.75"
+                            width="24"
+                            visible={true}
+                        /> :
+                        <span>{id === undefined ? 'Cadastrar' : 'Atualizar'}</span>
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-[#84cc16] text-white py-3 px-4 rounded-md hover:bg-opacity-90 
-                transition-colors disabled:bg-opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-              >
-                {isLoading ? (
-                  <>
-                    <span className="animate-spin mr-2">⟳</span>
-                    Cadastrando...
-                  </>
-                ) : (
-                  "Cadastrar Categoria"
-                )}
-              </button>
-              {mensagem && (
-                <div
-                  className={`mt-4 text-center ${
-                    mensagem.includes("sucesso")
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {mensagem}
-                </div>
-              )}
+                    }
+                </button>
             </form>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
-
-export default CadastroCategorias;
