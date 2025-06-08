@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../contexts/AuthContext';
 import type { UsuarioLogin } from '../../models/UsuarioLogin';
 import { RotatingLines } from 'react-loader-spinner';
+import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline'
 
 function Login() {
 
@@ -34,34 +35,37 @@ function Login() {
 
         return (
             <>
-                <div>
-                    <form onSubmit={login}>
-                        <h2>Entrar</h2>
-                        <div>
+                <div className='grid grid-cols-1 lg:grid-cols-1 
+                    h-screen place-items-center font-bold '>
+                    <form className='max-w-md bg-gray-200 p-8 rounded-3xl shadow-xl  flex justify-center items-center flex-col gap-4' onSubmit={login}>
+                        <h2 className='font-bold text-2xl m-2 flex flex-col items-center'>Login</h2>
+                        <div className='flex flex-col w-full relative'>
                             <label htmlFor="email">Email</label>
+                            <EnvelopeIcon className="w-5 h-5 text-gray-400 absolute left-3 top-11 transform -translate-y-1/2" />
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
-                                placeholder="Email"
-                                className="border-2 border-slate-700 rounded p-2"
+                                placeholder=""
+                                className="pl-10 w-full  bg-gray-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-orange-400"
                                 value={usuarioLogin.email}
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                             />
                         </div>
-                        <div className="flex flex-col w-full">
+                        <div className="flex flex-col w-full relative">
                             <label htmlFor="senha">Senha</label>
+                            <LockClosedIcon className="w-5 h-5 text-gray-400 absolute left-3 top-11 transform -translate-y-1/2" />
                             <input
                                 type="password"
                                 id="senha"
                                 name="senha"
-                                placeholder="Senha"
-                                className="border-2 border-slate-700 rounded p-2"
+                                placeholder=""
+                                className="pl-10 w-full  bg-gray-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-orange-400"
                                 value={usuarioLogin.senha}
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                             />
                         </div>
-                        <button type='submit'>
+                        <button type='submit' className='bg-green-400 hover:bg-green-500 font-medium text-sm py-2 rounded-lg p-4 text-black  mt-5 flex items-center justify-center '>
                             {isLoading ? (
                                 <RotatingLines
                                     strokeColor="white"
@@ -76,7 +80,7 @@ function Login() {
                         </button>
                         <p>
                             Ainda não tem uma conta?{' '}
-                            <Link to="/cadastro">
+                            <Link to="/cadastro" className='text-blue-500 hover:underline '>
                                 Cadastre-se
                             </Link>
                         </p>
