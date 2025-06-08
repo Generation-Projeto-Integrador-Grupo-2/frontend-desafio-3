@@ -1,20 +1,3 @@
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import About from "./pages/About";
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-
-
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ListaCategorias from './pages/categorias/ListaCategorias'
@@ -28,6 +11,7 @@ import DeletarProdutos from './components/produtos/deletarprodutos/DeletarProdut
 import CadastroProdutos from './components/produtos/cadastroprodutos/CadastroProdutos'
 import DeletarCategorias from './components/categorias/deletarcategorias/DeletarCategorias'
 import EditarProdutos from './components/produtos/editarprodutos/EditarProdutos'
+import About from './pages/About'
 
 
 function App() {
@@ -48,6 +32,7 @@ function App() {
             <Route path='/categorias' element={<ListaCategorias />} />
             <Route path='/categorias/cadastrar' element={<CadastroCategorias />} />
             <Route path='/deletarcategorias/:id' element={<DeletarCategorias />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
         </AuthProvider>

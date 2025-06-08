@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import type { UsuarioLogin } from '../../models/UsuarioLogin';
 import { RotatingLines } from 'react-loader-spinner';
 import { EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import './Login.css';
 
 function Login() {
 
@@ -35,8 +36,11 @@ function Login() {
 
         return (
             <>
-                <div className='grid grid-cols-1 lg:grid-cols-1 
-                    h-screen place-items-center font-bold '>
+                <div className='grid grid-cols-1 lg:grid-cols-2 
+                    h-screen place-items-center font-bold '
+                    style={{
+    backgroundImage: "url('/assets/img/salada.jpg')",}}>
+        <div className="flex justify-start items-center pl-10"></div>
                     <form className='max-w-md bg-gray-200 p-8 rounded-3xl shadow-xl  flex justify-center items-center flex-col gap-4' onSubmit={login}>
                         <h2 className='font-bold text-2xl m-2 flex flex-col items-center'>Login</h2>
                         <div className='flex flex-col w-full relative'>
