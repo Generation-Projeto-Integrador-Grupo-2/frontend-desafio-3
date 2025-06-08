@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import ListaProdutos from './pages/produtos/ListaProdutos'
 import DeletarProdutos from './components/produtos/deletarprodutos/DeletarProdutos'
 import CadastroProdutos from './components/produtos/cadastroprodutos/CadastroProdutos'
+import DeletarCategorias from './components/categorias/deletarcategorias/DeletarCategorias'
 import EditarProdutos from './components/produtos/editarprodutos/EditarProdutos'
 
 
@@ -29,6 +30,7 @@ function App() {
             <Route path='/deletarprodutos/:id' element={<DeletarProdutos />} />
             <Route path='/categorias' element={<ListaCategorias />} />
             <Route path='/categorias/cadastrar' element={<CadastroCategorias />} />
+            <Route path='/deletarcategorias/:id' element={<DeletarCategorias />} />
           </Routes>
         </div>
         </AuthProvider>
