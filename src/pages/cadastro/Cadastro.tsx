@@ -3,11 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import type { Usuario } from '../../models/Usuario';
 import { cadastrarUsuario } from '../../service/Service';
 import { RotatingLines } from 'react-loader-spinner';
-import { UserIcon ,
-     EnvelopeIcon,
-  LockClosedIcon,
-  MapPinIcon,
-  HashtagIcon} from '@heroicons/react/24/outline'
+import { UserIcon ,EnvelopeIcon,LockClosedIcon,MapPinIcon,HashtagIcon} from '@heroicons/react/24/outline'
+import './Cadastro.css';
 
 
     function Cadastro() {
@@ -65,9 +62,11 @@ import { UserIcon ,
 
     return (
         <>
-    <div className=' flex flex-col items-center justify-center min-h-screen bg-gray-50'>
+    <div className=' grid grid-cols-1 lg:grid-cols-2 h-screen 
+            place-items-center font-bold bg-gray-100'>
+        <div className="fundoCadastro hidden lg:block"></div>
         <div className='p-2 w-full max-w-md font-semibold '>
-            <form className=' justify-center  max-w-md p-4  bg-gray-200 rounded-2xl shadow-md flex-col gap-1' onSubmit={cadastrarNovoUsuario}>
+            <form className=' justify-center  max-w-md p-4  bg-gray-300 rounded-2xl shadow-md flex-col gap-1' onSubmit={cadastrarNovoUsuario}>
                 <h2 className='font-bold text-black text-2xl m-2 flex flex-col items-center'>Cadastrar</h2>
                 <div className="flex flex-col w-full relative">
                     <label htmlFor="name">Nome</label>
