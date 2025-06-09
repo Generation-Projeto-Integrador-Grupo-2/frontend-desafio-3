@@ -1,11 +1,12 @@
 import { useState, useEffect, type ChangeEvent, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RotatingLines } from "react-loader-spinner";
 import { AuthContext } from "../../../contexts/AuthContext";
 import type Produto from "../../../models/Produto";
 import type Categoria from "../../../models/Categoria";
+import type { Usuario } from "../../../models/Usuario";
 import { ToastAlerta } from "../../../utils/ToastAlerta";
-import { buscar, cadastrar } from "../../../service/Service";
+import { atualizar, buscar, cadastrar } from "../../../service/Service";
 
 export default function CadastroProdutos() {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function CadastroProdutos() {
     const [categoria, setCategoria] = useState<Categoria>({ id: 0, nome: '', descricao: '', imagemUrl: '', saudavel: false })
     const [produto, setProduto] = useState<Produto>({} as Produto);
 
+    const { id } = useParams<{ id: string }>();
     const { usuario, handleLogout } = useContext(AuthContext);
     const token = usuario.token;
 
@@ -23,6 +25,18 @@ export default function CadastroProdutos() {
             navigate('/');
         }
     }, [token]);
+
+    async function buscarProdutoPorId(id: string) {
+        try {
+            await buscar(`/produtos/${id}`, setProduto, {
+                headers: { Authorization: token }
+            });
+        } catch (error: any) {
+            if (error.toString().includes('403')) {
+                handleLogout();
+            }
+        }
+    }
 
     async function buscarCategorias() {
         try {
@@ -49,8 +63,12 @@ export default function CadastroProdutos() {
     }
 
     useEffect(() => {
-        buscarCategorias();
-    }, []);
+        buscarCategorias()
+
+        if (id !== undefined) {
+            buscarProdutoPorId(id);
+        }
+    }, [id]);
 
     useEffect(() => {
         setProduto({
@@ -59,11 +77,16 @@ export default function CadastroProdutos() {
         });
     }, [categoria]);
 
+    function retornar() {
+        navigate('/produtos');
+    }
+
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
         setProduto({
             ...produto,
             [e.target.name]: e.target.value,
             categoria: categoria,
+            usuario: usuario,
         });
     }
 
@@ -71,31 +94,51 @@ export default function CadastroProdutos() {
         e.preventDefault();
         setIsLoading(true);
 
-        try {
-            await cadastrar(`/produtos`, produto, setProduto, {
-                headers: {
-                    Authorization: token,
-                },
-            });
+        if (id !== undefined) {
+            try {
+                await atualizar(`/produtos`, produto, setProduto, {
+                    headers: {
+                        Authorization: token,
+                    },
+                });
+                ToastAlerta('Produto atualizado com sucesso', 'sucesso');
+                navigate('/produtos');
+            } catch (error: any) {
+                if (error.toString().includes('403')) {
+                    handleLogout();
+                } else {
+                    ToastAlerta('Erro ao atualizar o Produto', 'erro');
+                }
 
-            ToastAlerta('Produto cadastrado com sucesso', 'sucesso');
-            navigate('/produtos');
-        } catch (error: any) {
-            if (error.toString().includes('403')) {
-                handleLogout();
-            } else {
-                ToastAlerta('Erro ao cadastrar o Produto', 'erro');
+            }
+        } else {
+            try {
+                await cadastrar(`/produtos`, produto, setProduto, {
+                    headers: {
+                        Authorization: token,
+                    },
+                });
+
+                ToastAlerta('Produto cadastrado com sucesso', 'sucesso');
+                navigate('/produtos');
+            } catch (error: any) {
+                if (error.toString().includes('403')) {
+                    handleLogout();
+                } else {
+                    ToastAlerta('Erro ao cadastrar o Produto', 'erro');
+                }
             }
         }
 
         setIsLoading(false);
+        retornar();
     }
 
     const carregandoCategoria = categoria.nome === '';
 
     return (
         <div className="container flex flex-col mx-auto items-center">
-            <h1 className="text-4xl text-center my-8">Cadastrar Produto</h1>
+            <h1 className="text-4xl text-center my-8">{id !== undefined ? 'Editar Produto' : 'Cadastrar Produto'}</h1>
 
             <form className="flex flex-col w-1/2 gap-4" onSubmit={gerarNovoProduto}>
                 <div className="flex flex-col gap-2">
@@ -107,7 +150,7 @@ export default function CadastroProdutos() {
                         required
                         className="border-2 border-slate-700 rounded p-2"
                         value={produto.nome}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -119,7 +162,7 @@ export default function CadastroProdutos() {
                         required
                         className="border-2 border-slate-700 rounded p-2"
                         value={produto.descricao}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -131,7 +174,7 @@ export default function CadastroProdutos() {
                         required
                         className="border-2 border-slate-700 rounded p-2"
                         value={produto.foto}
-                        onChange={atualizarEstado}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -143,8 +186,8 @@ export default function CadastroProdutos() {
                         required
                         className="border-2 border-slate-700 rounded p-2"
                         value={produto.preco}
-                        onChange={atualizarEstado}
-                    /> 
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
+                    />
                 </div>
                 <div className="flex flex-col gap-2">
                     <p>Categoria do Produto</p>
@@ -178,7 +221,7 @@ export default function CadastroProdutos() {
                             visible={true}
                         />
                     ) : (
-                        <span>Cadastrar</span>
+                        <span>{id !== undefined ? 'Atualizar' : 'Cadastrar'}</span>
                     )}
                 </button>
             </form>
