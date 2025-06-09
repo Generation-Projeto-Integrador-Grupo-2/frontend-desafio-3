@@ -1,5 +1,5 @@
 import Categorias from "../components/categorias/Categorias";
-import ListaProdutos from "../components/listaprodutos/ListaProdutos";
+import ListaProdutos from "../components/formprodutos/FormProdutos";
 import Restaurantes from "../components/restaurantes/Restaurantes";
 
 function Pedidos() {

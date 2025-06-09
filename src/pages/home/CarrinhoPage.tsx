@@ -1,10 +1,23 @@
-import useCarrinho from "../../components/carrinho/useCarrinho";
+import { toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
+import { useCarrinho } from '../../components/carrinho/CarrinhoContext';
 
 export default function CarrinhoPage() {
-  const { itens, remover, limpar, total } = useCarrinho();
+  const { carrinho: itens, removerDoCarrinho: remover, limparCarrinho: limpar } = useCarrinho();
+
+  const total = itens.reduce((soma, item) => soma + item.preco, 0);
 
   const finalizarPedido = () => {
-    alert("Pedido finalizado com sucesso!");
+    toast.success('Pedido finalizado com sucesso!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
     limpar();
   };
 
@@ -29,7 +42,7 @@ export default function CarrinhoPage() {
                 />
                 <div>
                   <h2 className="font-semibold text-lg">{item.nome}</h2>
-                  <p className="text-green-600">{item.preco}</p>
+                  <p className="text-green-600">R$ {item.preco.toFixed(2).replace('.', ',')}</p>
                 </div>
               </div>
               <button
@@ -43,9 +56,9 @@ export default function CarrinhoPage() {
 
           <div className="flex justify-between items-center mt-6">
             <p className="text-xl font-semibold">
-              Total:{" "}
+              Total:{' '}
               <span className="text-green-700">
-                R$ {total.toFixed(2).replace(".", ",")}
+                R$ {total.toFixed(2).replace('.', ',')}
               </span>
             </p>
             <button

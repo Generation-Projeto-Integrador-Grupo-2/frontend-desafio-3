@@ -1,58 +1,54 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-interface Produto {
+type Produto = {
   id: number;
   nome: string;
-  preco: string;
+  preco: number;
   imagem: string;
-}
+};
 
-interface CarrinhoContextType {
-  itens: Produto[];
-  adicionar: (produto: Produto) => void;
-  remover: (produtoId: number) => void;
-  limpar: () => void;
-}
+type CarrinhoContextType = {
+  carrinho: Produto[];
+  adicionarAoCarrinho: (produto: Produto) => void;
+  removerDoCarrinho: (id: number) => void;
+  limparCarrinho: () => void;
+};
 
-const CarrinhoContext = createContext<CarrinhoContextType | undefined>(undefined);
+const CarrinhoContext = createContext<CarrinhoContextType>({} as CarrinhoContextType);
 
-export function CarrinhoProvider({ children }: { children: ReactNode }) {
-  const [itens, setItens] = useState<Produto[]>([]);
+export const CarrinhoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [carrinho, setCarrinho] = useState<Produto[]>([]);
 
-  // Carregar carrinho do localStorage ao iniciar
   useEffect(() => {
-    const salvo = localStorage.getItem("carrinho");
-    if (salvo) setItens(JSON.parse(salvo));
+    const carrinhoSalvo = localStorage.getItem('carrinho');
+    if (carrinhoSalvo) {
+      setCarrinho(JSON.parse(carrinhoSalvo));
+    }
   }, []);
 
-  // Atualizar localStorage sempre que o carrinho mudar
   useEffect(() => {
-    localStorage.setItem("carrinho", JSON.stringify(itens));
-  }, [itens]);
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+  }, [carrinho]);
 
-  const adicionar = (produto: Produto) => {
-    setItens((prev) => [...prev, produto]);
+  const adicionarAoCarrinho = (produto: Produto) => {
+    setCarrinho((prev) => [...prev, produto]);
   };
 
-  const remover = (produtoId: number) => {
-    setItens((prev) => prev.filter((item) => item.id !== produtoId));
+  const removerDoCarrinho = (id: number) => {
+    setCarrinho((prev) => prev.filter((p) => p.id !== id));
   };
 
-  const limpar = () => {
-    setItens([]);
+  const limparCarrinho = () => {
+    setCarrinho([]);
   };
 
   return (
-    <CarrinhoContext.Provider value={{ itens, adicionar, remover, limpar }}>
+    <CarrinhoContext.Provider
+      value={{ carrinho, adicionarAoCarrinho, removerDoCarrinho, limparCarrinho }}
+    >
       {children}
     </CarrinhoContext.Provider>
   );
-}
+};
 
-export function useCarrinhoContext() {
-  const context = useContext(CarrinhoContext);
-  if (!context) {
-    throw new Error("useCarrinhoContext deve ser usado dentro do CarrinhoProvider");
-  }
-  return context;
-}
+export const useCarrinho = () => useContext(CarrinhoContext);

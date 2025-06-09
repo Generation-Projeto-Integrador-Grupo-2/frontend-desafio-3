@@ -4,7 +4,7 @@ function Home() {
   const navigate = useNavigate();
 
   const irParaCategorias = () => {
-    navigate("/pedidos");
+    navigate("/produtos");
   };
 
   return (
