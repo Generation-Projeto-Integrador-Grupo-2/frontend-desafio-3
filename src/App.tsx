@@ -16,6 +16,7 @@ import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import CarrinhoPage from './components/carrinho/Carrinho';
 import { CarrinhoProvider } from './components/carrinho/CarrinhoContext';
+import Empresas from './pages/empresas/Empresas';
 
 function AppContent() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/restaurantes" element={<Restaurantes />} />
+          <Route path="/empresas" element={<Empresas />} />
           <Route path="/produtos/cadastrar" element={<FormProdutos />} />
           <Route path="/editarprodutos/:id" element={<FormProdutos />} />
           <Route path="/deletarprodutos/:id" element={<DeletarProdutos />} />
