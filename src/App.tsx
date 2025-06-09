@@ -18,23 +18,23 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <AuthProvider> 
-              <div className="min-h-[80vh]">
-        <ToastContainer/>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/cadastro" element={<Cadastro />} />
-            <Route path="/login" element={<Login />} />
-            <Route path='/produtos' element={<ListaProdutos />} />
-            <Route path='/produtos/cadastrar' element={<CadastroProdutos />} />
-            <Route path='/editarprodutos/:id' element={<EditarProdutos />} />
-            <Route path='/deletarprodutos/:id' element={<DeletarProdutos />} />
-            <Route path='/categorias' element={<ListaCategorias />} />
-            <Route path='/categorias/cadastrar' element={<CadastroCategorias />} />
-            <Route path='/deletarcategorias/:id' element={<DeletarCategorias />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </div>
+        <AuthProvider>
+          <div className="min-h-[80vh]">
+            <ToastContainer />
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/cadastro" element={<Cadastro />} />
+              <Route path="/login" element={<Login />} />
+              <Route path='/produtos' element={<ListaProdutos />} />
+              <Route path='/produtos/cadastrar' element={<CadastroProdutos />} />
+              <Route path='/editarprodutos/:id' element={<EditarProdutos />} />
+              <Route path='/deletarprodutos/:id' element={<DeletarProdutos />} />
+              <Route path='/categorias' element={<ListaCategorias />} />
+              <Route path='/categorias/cadastrar' element={<CadastroCategorias />} />
+              <Route path='/deletarcategorias/:id' element={<DeletarCategorias />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </div>
         </AuthProvider>
       </BrowserRouter>
     </>
