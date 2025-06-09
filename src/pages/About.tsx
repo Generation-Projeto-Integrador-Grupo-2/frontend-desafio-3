@@ -1,4 +1,3 @@
-import React from "react";
 import FeatureCard from "../components/FeatureCard";
 import { CheckCircle, Users, Shield, Cpu, DollarSign } from "lucide-react";
 
