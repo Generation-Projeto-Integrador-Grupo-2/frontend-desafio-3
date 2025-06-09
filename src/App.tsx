@@ -5,6 +5,7 @@ import CadastroCategorias from './components/categorias/cadastrocategorias/Cadas
 import Login from './pages/login/Login'
 import Cadastro from './pages/cadastro/Cadastro'
 import Home from './pages/home/Home'
+import Restaurantes from './components/restaurantes/Restaurantes'
 import { AuthProvider } from './contexts/AuthContext'
 import { ToastContainer } from 'react-toastify'
 import ListaProdutos from './pages/produtos/ListaProdutos'
@@ -29,6 +30,7 @@ function AppContent() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/restaurantes" element={<Restaurantes />} />
           <Route path="/produtos" element={<ListaProdutos />} />
           <Route path="/produtos/cadastrar" element={<FormProdutos />} />
           <Route path="/editarprodutos/:id" element={<FormProdutos />} />
