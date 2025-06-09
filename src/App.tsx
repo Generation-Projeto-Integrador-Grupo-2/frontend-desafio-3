@@ -36,7 +36,7 @@ function AppContent() {
           <Route path="/categorias" element={<ListaCategorias />} />
           <Route path="/categorias/cadastrar" element={<CadastroCategorias />} />
           <Route path="/deletarcategorias/:id" element={<DeletarCategorias />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/sobre" element={<About />} />
         </Routes>
       </div>
       {!hideNavAndFooter && <Footer />}
