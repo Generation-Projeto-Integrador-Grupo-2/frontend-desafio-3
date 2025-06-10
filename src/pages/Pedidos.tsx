@@ -1,6 +1,6 @@
 import Categorias from "../components/categorias/Categorias";
-import ListaProdutos from "../components/formprodutos/FormProdutos";
 import Restaurantes from "../components/restaurantes/Restaurantes";
+import ListaProdutos from "./produtos/ListaProdutos";
 
 function Pedidos() {
   return (
