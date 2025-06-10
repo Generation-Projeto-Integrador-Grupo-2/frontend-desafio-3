@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { buscar } from "../../service/Service";
 import { ToastAlerta } from "../../utils/ToastAlerta";
+import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
 import { LeafIcon } from "@phosphor-icons/react";
 
 export default function ListaProdutos() {
@@ -13,22 +14,7 @@ export default function ListaProdutos() {
   const token = usuario.token;
 
   const [mostrarSaudaveis, setMostrarSaudaveis] = useState(false);
-
-  function adicionarAoCarrinho(produto: Produto) {
-    const carrinhoString = localStorage.getItem('carrinho');
-    let carrinho: any[] = carrinhoString ? JSON.parse(carrinhoString) : [];
-
-    const itemExistente = carrinho.find((item) => item.id === produto.id);
-
-    if (itemExistente) {
-      itemExistente.quantidade += 1;
-    } else {
-      carrinho.push({ ...produto, quantidade: 1 });
-    }
-
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-    ToastAlerta(`"${produto.nome}" adicionado ao carrinho!`, 'sucesso');
-  }
+  const { adicionarAoCarrinho } = useCarrinho();
 
   async function buscarProdutos() {
     try {
@@ -102,7 +88,10 @@ export default function ListaProdutos() {
 
                 <div className="flex justify-center p-4">
                   <button
-                    onClick={() => adicionarAoCarrinho(produto)}
+                    onClick={() => {
+                      adicionarAoCarrinho({ ...produto, quantidade: 1 });
+                      ToastAlerta(`"${produto.nome}" adicionado ao carrinho!`, 'sucesso');
+                    }}
                     className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                   >
                     Adicionar ao Carrinho
