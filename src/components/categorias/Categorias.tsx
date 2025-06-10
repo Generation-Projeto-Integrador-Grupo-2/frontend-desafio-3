@@ -1,6 +1,6 @@
 import { useState } from "react";
 import produtosPorCategoria from "../../data/produtosPorCategoria";
-import ListaProdutos from "../formprodutos/FormProdutos";
+import ListaProdutos from "../../pages/produtos/ListaProdutos"; // Corrigir este import
 
 const todasCategorias = Object.keys(produtosPorCategoria);
 
@@ -14,11 +14,10 @@ export default function Categorias() {
       <div className="flex flex-wrap justify-center gap-4 mb-8">
         <button
           onClick={() => setCategoriaSelecionada(null)}
-          className={`px-4 py-2 rounded-full border ${
-            categoriaSelecionada === null
-              ? "bg-red-700 text-white"
-              : "bg-white text-red-700 border-red-700"
-          } hover:bg-red-800 hover:text-white transition`}
+          className={`px-4 py-2 rounded-full border ${categoriaSelecionada === null
+            ? "bg-red-700 text-white"
+            : "bg-white text-red-700 border-red-700"
+            } hover:bg-red-800 hover:text-white transition`}
         >
           Todas
         </button>
@@ -27,11 +26,10 @@ export default function Categorias() {
           <button
             key={categoria}
             onClick={() => setCategoriaSelecionada(categoria)}
-            className={`px-4 py-2 rounded-full border ${
-              categoriaSelecionada === categoria
-                ? "bg-red-700 text-white"
-                : "bg-white text-red-700 border-red-700"
-            } hover:bg-red-800 hover:text-white transition`}
+            className={`px-4 py-2 rounded-full border ${categoriaSelecionada === categoria
+              ? "bg-red-700 text-white"
+              : "bg-white text-red-700 border-red-700"
+              } hover:bg-red-800 hover:text-white transition`}
           >
             {categoria}
           </button>

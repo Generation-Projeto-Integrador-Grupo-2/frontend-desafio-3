@@ -7,7 +7,11 @@ import { ToastAlerta } from "../../utils/ToastAlerta";
 import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
 import { LeafIcon } from "@phosphor-icons/react";
 
-export default function ListaProdutos() {
+interface ListaProdutosProps {
+  categoria?: string;
+}
+
+export default function ListaProdutos({ categoria }: ListaProdutosProps) {
   const navigate = useNavigate();
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const { usuario, handleLogout } = useContext(AuthContext)!;
@@ -59,7 +63,10 @@ export default function ListaProdutos() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 auto-rows-fr">
           {produtos
-            .filter((produto) => !mostrarSaudaveis || produto.categoria?.saudavel)
+            .filter((produto) =>
+              (!mostrarSaudaveis || produto.categoria?.saudavel) &&
+              (!categoria || produto.categoria?.nome === categoria)
+            )
             .map((produto) => (
               <div
                 key={produto.id}
