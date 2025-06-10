@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useState } from "react";
+import { createContext, type ReactNode, useEffect, useState } from "react";
 import type { UsuarioLogin } from "../models/UsuarioLogin";
 import { ToastAlerta } from "../utils/ToastAlerta";
 import { login } from "../service/Service";
