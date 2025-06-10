@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useState, useEffect } from "react";
+import { createContext, type ReactNode, useState } from "react";
 import type { UsuarioLogin } from "../models/UsuarioLogin";
 import { ToastAlerta } from "../utils/ToastAlerta";
 import { login } from "../service/Service";
@@ -17,11 +17,12 @@ interface AuthProviderProps {
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [usuario, setUsuario] = useState<UsuarioLogin>(() => {
-    const usuarioLocal = localStorage.getItem("usuario");
-    return usuarioLocal
-      ? JSON.parse(usuarioLocal)
-      : { id: 0, nome: "", email: "", senha: "", token: "" };
+  const [usuario, setUsuario] = useState<UsuarioLogin>({
+    id: 0,
+    nome: "",
+    email: "",
+    senha: "",
+    token: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +30,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     localStorage.setItem("usuario", JSON.stringify(usuario));
   }, [usuario]);
-
+    
   async function handleLogin(usuarioLogin: UsuarioLogin) {
     setIsLoading(true);
     try {
@@ -42,8 +43,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function handleLogout() {
-    setUsuario({ id: 0, nome: "", email: "", senha: "", token: "" });
-    localStorage.removeItem("usuario");
+    setUsuario({
+      id: 0,
+      nome: "",
+      email: "",
+      senha: "",
+      token: "",
+    });
+    localStorage.removeItem("token");
   }
 
   return (

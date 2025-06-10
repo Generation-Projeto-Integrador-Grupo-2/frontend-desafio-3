@@ -1,6 +1,6 @@
 import { useState } from "react";
 import produtosPorCategoria from "../../data/produtosPorCategoria";
-import ListaProdutos from "../listaprodutos/ListaProdutos";
+import ListaProdutos from "../formprodutos/FormProdutos";
 
 const todasCategorias = Object.keys(produtosPorCategoria);
 

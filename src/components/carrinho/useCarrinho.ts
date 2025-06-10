@@ -1,16 +1,13 @@
-import { useCarrinhoContext } from "./CarrinhoContext";
+import { useCarrinho } from "./CarrinhoContext";
 
-export default function useCarrinho() {
-  const { itens, adicionar, remover, limpar } = useCarrinhoContext();
+export default function useCarrinhoHook() {
+  const { carrinho, adicionarAoCarrinho, removerDoCarrinho, limparCarrinho } = useCarrinho();
 
   return {
-    itens,
-    adicionar,
-    remover,
-    limpar,
-    total: itens.reduce((acc, item) => {
-      const valor = parseFloat(item.preco.replace("R$", "").replace(",", "."));
-      return acc + valor;
-    }, 0),
+    itens: carrinho,
+    adicionar: adicionarAoCarrinho,
+    remover: removerDoCarrinho,
+    limpar: limparCarrinho,
+    total: carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0),
   };
 }
