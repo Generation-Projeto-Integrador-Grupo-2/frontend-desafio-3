@@ -1,58 +1,54 @@
-import { createContext, type ReactNode, useState } from "react"
-import type { UsuarioLogin } from "../models/UsuarioLogin"
-import { ToastAlerta } from "../utils/ToastAlerta"
-import { login } from "../service/Service"
+import { createContext, type ReactNode, useState, useEffect } from "react";
+import type { UsuarioLogin } from "../models/UsuarioLogin";
+import { ToastAlerta } from "../utils/ToastAlerta";
+import { login } from "../service/Service";
 
 interface AuthContextProps {
-usuario: UsuarioLogin
-handleLogout(): void
-handleLogin(usuario: UsuarioLogin): Promise<void>
-isLoading: boolean
+  usuario: UsuarioLogin;
+  handleLogout(): void;
+  handleLogin(usuario: UsuarioLogin): Promise<void>;
+  isLoading: boolean;
 }
 
 interface AuthProviderProps {
-children: ReactNode
+  children: ReactNode;
 }
 
-export const AuthContext = createContext({} as AuthContextProps)
+export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-const [usuario, setUsuario] = useState<UsuarioLogin>({
-    id: 0,
-    nome: "",
-    email: "",
-    senha: "",
-    token: ""
-})
+  const [usuario, setUsuario] = useState<UsuarioLogin>(() => {
+    const usuarioLocal = localStorage.getItem("usuario");
+    return usuarioLocal
+      ? JSON.parse(usuarioLocal)
+      : { id: 0, nome: "", email: "", senha: "", token: "" };
+  });
 
-const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
-async function handleLogin(usuarioLogin: UsuarioLogin) {
-    setIsLoading(true)
+  useEffect(() => {
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+  }, [usuario]);
+
+  async function handleLogin(usuarioLogin: UsuarioLogin) {
+    setIsLoading(true);
     try {
-    await login(`/usuarios/logar`, usuarioLogin, setUsuario)
-    ToastAlerta("Usuário foi autenticado com sucesso!", "sucesso")
+      await login(`/usuarios/logar`, usuarioLogin, setUsuario);
+      ToastAlerta("Usuário foi autenticado com sucesso!", "sucesso");
     } catch (error) {
-    ToastAlerta("Os dados do Usuário estão inconsistentes!", "erro")
+      ToastAlerta("Os dados do Usuário estão inconsistentes!", "erro");
     }
-    setIsLoading(false)
-}
+    setIsLoading(false);
+  }
 
-function handleLogout() {
-    setUsuario({
-    id: 0,
-    nome: "",
-    email: "",
-    senha: "",
-    token: ""
-    })
-}
+  function handleLogout() {
+    setUsuario({ id: 0, nome: "", email: "", senha: "", token: "" });
+    localStorage.removeItem("usuario");
+  }
 
-return (
-    <AuthContext.Provider
-    value={{ usuario, handleLogin, handleLogout, isLoading }}
-    >
-    {children}
+  return (
+    <AuthContext.Provider value={{ usuario, handleLogin, handleLogout, isLoading }}>
+      {children}
     </AuthContext.Provider>
-)
+  );
 }

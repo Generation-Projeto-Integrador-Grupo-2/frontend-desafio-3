@@ -18,7 +18,7 @@ import './Cadastro.css';
         const[usuario, setUsuario] = useState<Usuario>({name:'',email:'',senha:'',endereco:'',numero:''})
 
         function retornar(){
-            navigate('/cadastro')
+            navigate('/login')
         }
 
         useEffect(() => {
@@ -98,7 +98,7 @@ import './Cadastro.css';
                     <label htmlFor="senha">Senha</label>
                     <LockClosedIcon className="w-5 h-5 text-gray-400 absolute left-3 top-11 transform -translate-y-1/2 pointer-events-none" />
                     <input
-                    type="senha"
+                    type="password"
                     id="senha"
                     name="senha"
                     placeholder=""
@@ -111,7 +111,7 @@ import './Cadastro.css';
                     <label htmlFor="confirmaSenha">Confirma Senha</label>
                     <LockClosedIcon className="w-5 h-5 text-gray-400 absolute left-3 top-11 transform -translate-y-1/2 pointer-events-none" />
                     <input
-                    type="senha"
+                    type="password"
                     id="confirmaSenha"
                     name="confrimaSenha"
                     placeholder=""
@@ -147,14 +147,7 @@ import './Cadastro.css';
                     />
                 </div>
                 <div className="flex justify-around w-full gap-8 m-4">
-                    <button 
-                        type='reset'
-                        className='bg-red-400 hover:bg-red-500 font-medium text-sm py-2 rounded-lg p-4  text-black'
-                        onClick={retornar} 
-                        >
-
-                        Cancelar
-                    </button>
+                    
                     <button 
                         type='submit'
                         className='bg-green-400 hover:bg-green-500 font-medium text-sm py-2 rounded-lg p-4 text-black ' 

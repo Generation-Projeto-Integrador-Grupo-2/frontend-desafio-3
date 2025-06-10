@@ -9,7 +9,17 @@ export const api = axios.create({
 
 export const cadastrarUsuario = async (url: string, dados: Object, setDados: Function) => {
     const resposta = await api.post(url, dados);
-    setDados(resposta.data);
+    //setDados(resposta.data);
+
+    const usuario = resposta.data;
+    
+    // Remove o campo senha (que está com token)
+    delete usuario.senha;
+    
+    // Agora atualiza o estado com o objeto limpo
+    setDados(usuario);
+
+    
 }
 
 export const login = async (url: string, dados: Object, setDados: Function) => {

@@ -4,7 +4,6 @@ import { RotatingLines } from "react-loader-spinner";
 import { AuthContext } from "../../../contexts/AuthContext";
 import type Produto from "../../../models/Produto";
 import type Categoria from "../../../models/Categoria";
-import type { Usuario } from "../../../models/Usuario";
 import { ToastAlerta } from "../../../utils/ToastAlerta";
 import { atualizar, buscar, cadastrar } from "../../../service/Service";
 
@@ -85,8 +84,7 @@ export default function CadastroProdutos() {
         setProduto({
             ...produto,
             [e.target.name]: e.target.value,
-            categoria: categoria,
-            usuario: usuario,
+            categoria: categoria
         });
     }
 
