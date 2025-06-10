@@ -8,9 +8,6 @@ export default function useCarrinhoHook() {
     adicionar: adicionarAoCarrinho,
     remover: removerDoCarrinho,
     limpar: limparCarrinho,
-    total: carrinho.reduce((acc, item) => {
-      const valor = parseFloat(item.preco.toString().replace("R$", "").replace(",", "."));
-      return acc + valor;
-    }, 0),
+    total: carrinho.reduce((acc, item) => acc + item.preco * item.quantidade, 0),
   };
 }

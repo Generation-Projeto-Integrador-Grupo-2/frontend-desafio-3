@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Produto = {
+export type Produto = {
   id: number;
   nome: string;
   preco: number;
-  imagem: string;
+  imagem?: string; 
+  foto?: string;   
+  quantidade: number;
 };
 
 type CarrinhoContextType = {
@@ -12,6 +14,8 @@ type CarrinhoContextType = {
   adicionarAoCarrinho: (produto: Produto) => void;
   removerDoCarrinho: (id: number) => void;
   limparCarrinho: () => void;
+  incrementarQuantidade: (id: number) => void;
+  decrementarQuantidade: (id: number) => void;
 };
 
 const CarrinhoContext = createContext<CarrinhoContextType>({} as CarrinhoContextType);
@@ -31,11 +35,47 @@ export const CarrinhoProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [carrinho]);
 
   const adicionarAoCarrinho = (produto: Produto) => {
-    setCarrinho((prev) => [...prev, produto]);
+    setCarrinho((prev) => {
+      const existente = prev.find((p) => p.id === produto.id);
+      if (existente) {
+        return prev.map((p) =>
+          p.id === produto.id ? { ...p, quantidade: p.quantidade + 1 } : p
+        );
+      }
+
+      return [
+        ...prev,
+        {
+          id: produto.id,
+          nome: produto.nome,
+          preco: produto.preco,
+          imagem: produto.imagem || produto.foto || '',
+          quantidade: 1,
+        },
+      ];
+    });
   };
 
   const removerDoCarrinho = (id: number) => {
     setCarrinho((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const incrementarQuantidade = (id: number) => {
+    setCarrinho((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, quantidade: p.quantidade + 1 } : p
+      )
+    );
+  };
+
+  const decrementarQuantidade = (id: number) => {
+    setCarrinho((prev) =>
+      prev
+        .map((p) =>
+          p.id === id ? { ...p, quantidade: p.quantidade - 1 } : p
+        )
+        .filter((p) => p.quantidade > 0)
+    );
   };
 
   const limparCarrinho = () => {
@@ -44,7 +84,14 @@ export const CarrinhoProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   return (
     <CarrinhoContext.Provider
-      value={{ carrinho, adicionarAoCarrinho, removerDoCarrinho, limparCarrinho }}
+      value={{
+        carrinho,
+        adicionarAoCarrinho,
+        removerDoCarrinho,
+        limparCarrinho,
+        incrementarQuantidade,
+        decrementarQuantidade,
+      }}
     >
       {children}
     </CarrinhoContext.Provider>
