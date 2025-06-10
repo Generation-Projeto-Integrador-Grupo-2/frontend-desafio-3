@@ -27,6 +27,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+  }, [usuario]);
+    
   async function handleLogin(usuarioLogin: UsuarioLogin) {
     setIsLoading(true);
     try {
