@@ -28,8 +28,16 @@ const About = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold text-center mb-2">
-        Sobre a <span className="text-red-600">reBU</span>{" "}
-        <span className="text-green-600">eats</span>
+        Sobre a <span
+          className="text-4xl font-bold"
+          style={{
+            fontFamily: 'Courgette, cursive',
+            color: '#FF6961',
+            textDecoration: 'underline',
+          }}
+        >
+          rebU Eats
+        </span>
       </h1>
       <p className="text-center text-gray-600 mb-10">
         Mais do que uma plataforma de delivery — uma proposta ética, social e colaborativa
