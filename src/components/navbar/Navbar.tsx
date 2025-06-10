@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
 
       <nav className="w-full" style={{ backgroundColor: '#FF6961' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 text-white">
-          
+
           <span
             className="text-3xl font-bold"
             style={{
@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
               Carrinho
             </Link>
             <Link to="/sobre" className="hover:text-green-300 transition-colors">
-              Sobre Nós
+              Sobre
             </Link>
           </div>
 
