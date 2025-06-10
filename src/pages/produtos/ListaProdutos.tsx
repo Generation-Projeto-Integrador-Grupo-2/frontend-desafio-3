@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { buscar } from "../../service/Service";
 import { ToastAlerta } from "../../utils/ToastAlerta";
-import { LeafIcon } from "@phosphor-icons/react";
+import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
 
 export default function ListaProdutos() {
   const navigate = useNavigate();
