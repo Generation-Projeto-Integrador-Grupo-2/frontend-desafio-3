@@ -41,7 +41,7 @@ function Login() {
                     style={{
     backgroundImage: "url('/assets/img/salada.jpg')",}}>
         <div className="flex justify-start items-center pl-10"></div>
-                    <form className='max-w-md bg-gray-200 p-8 rounded-3xl shadow-xl  flex justify-center items-center flex-col gap-4' onSubmit={login}>
+                    <form className='max-w-md bg-gray-300 p-8 rounded-3xl shadow-xl  flex justify-center items-center flex-col gap-4' onSubmit={login}>
                         <h2 className='font-bold text-2xl m-2 flex flex-col items-center'>Login</h2>
                         <div className='flex flex-col w-full relative'>
                             <label htmlFor="email">Email</label>
@@ -51,7 +51,7 @@ function Login() {
                                 id="email"
                                 name="email"
                                 placeholder=""
-                                className="pl-10 w-full  bg-gray-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-orange-400"
+                                className="pl-10 w-full  bg-gray-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-red-400"
                                 value={usuarioLogin.email}
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                             />
@@ -64,7 +64,7 @@ function Login() {
                                 id="senha"
                                 name="senha"
                                 placeholder=""
-                                className="pl-10 w-full  bg-gray-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-orange-400"
+                                className="pl-10 w-full  bg-gray-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-red-400"
                                 value={usuarioLogin.senha}
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                             />
