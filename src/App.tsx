@@ -45,7 +45,6 @@ function AppContent() {
           <Route path="/editarprodutos/:id" element={<FormProdutos />} />
           <Route path="/deletarprodutos/:id" element={<DeletarProdutos />} />
           <Route path="/categorias" element={<ListaCategorias />} />
-          <Route path="/produtos/categoria/:id" element={<ListaProdutos />} />
           <Route path="/categorias/cadastrar" element={<CadastroCategorias />} />
           <Route path="/editarcategorias/:id" element={<CadastroCategorias />} />
           <Route path="/deletarcategorias/:id" element={<DeletarCategorias />} />

@@ -23,12 +23,7 @@ export default function CarrinhoPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1
-        className="text-3xl font-bold mb-6 text-red-800"
-        style={{ fontFamily: "'Courgette', cursive" }}
-      >
-        Seu Carrinho
-      </h1>
+      <h1 className="text-3xl font-bold mb-6 text-red-800">Seu Carrinho</h1>
 
       {itens.length === 0 ? (
         <p className="text-gray-600">Seu carrinho está vazio.</p>
