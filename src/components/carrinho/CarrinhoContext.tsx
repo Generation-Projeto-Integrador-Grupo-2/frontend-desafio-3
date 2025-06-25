@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 export type Produto = {
+  [x: string]: ReactNode;
   id: number;
   nome: string;
   preco: number;

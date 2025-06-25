@@ -1,12 +1,9 @@
-import type Categoria from "./Categoria";
-import type { Usuario } from "./Usuario";
-
 export default interface Produto {
-    id: number;
-    nome: string;
-    descricao: string;
-    preco: number;
-    foto: string;
-    categoria?: Categoria;
-    usuario?: Usuario
+  categoria: any;
+  id: number;
+  nome: string;
+  descricao: string;
+  foto: string;
+  preco: number;
+  empresa?: string; 
 }
