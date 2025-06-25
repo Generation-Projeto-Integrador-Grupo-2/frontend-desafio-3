@@ -1,43 +1,50 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import type Produto from "../../models/Produto";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { buscar } from "../../service/Service";
 import { ToastAlerta } from "../../utils/ToastAlerta";
-import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
-import { LeafIcon } from "@phosphor-icons/react";
+import { useCarrinho } from "../../components/carrinho/CarrinhoContext";// ajuste o caminho se necessário
+import Sidebar from "../../components/sidebar/Sidebar";
 
-interface ListaProdutosProps {
-  categoria?: string;
-}
-
-export default function ListaProdutos({ categoria }: ListaProdutosProps) {
+export default function ListaProdutos() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const { usuario, handleLogout } = useContext(AuthContext)!;
   const token = usuario.token;
 
-  const [mostrarSaudaveis, setMostrarSaudaveis] = useState(false);
   const { adicionarAoCarrinho } = useCarrinho();
+
+  // Estados para os filtros
+  const [filtros, setFiltros] = useState<{
+    categoriaId?: number;
+    precoMax?: number;
+    saudavel?: boolean;
+  }>({
+    categoriaId: id ? Number(id) : undefined,
+    precoMax: 100,
+    saudavel: false,
+  });
 
   async function buscarProdutos() {
     try {
-      await buscar('/produtos', setProdutos, {
+      await buscar("/produtos", setProdutos, {
         headers: {
           Authorization: token,
         },
       });
     } catch (error: any) {
-      if (error.toString().includes('403')) {
+      if (error.toString().includes("403")) {
         handleLogout();
       }
     }
   }
 
   useEffect(() => {
-    if (token === '') {
-      ToastAlerta('Você precisa estar logado', 'erro');
-      navigate('/');
+    if (token === "") {
+      ToastAlerta("Você precisa estar logado", "erro");
+      navigate("/");
     }
   }, [token]);
 
@@ -45,67 +52,97 @@ export default function ListaProdutos({ categoria }: ListaProdutosProps) {
     buscarProdutos();
   }, []);
 
+  // Extrair categorias únicas dos produtos para passar na Sidebar
+  const categoriasUnicas = Array.from(
+    new Map(
+      produtos
+        .filter((p) => p.categoria)
+        .map((p) => [p.categoria!.id, p.categoria!])
+    ).values()
+  );
+
+  // Aplica os filtros na lista de produtos
+  const produtosFiltrados = produtos.filter((produto) => {
+    // filtro categoria pelo id da url ou filtro da sidebar
+    const correspondeCategoria = filtros.categoriaId
+      ? produto.categoria?.id === filtros.categoriaId
+      : true;
+
+    // filtro preço máximo
+    const precoNum = Number(produto.preco);
+    const correspondePreco =
+      filtros.precoMax !== undefined ? precoNum <= filtros.precoMax : true;
+
+    // filtro saudável
+    const correspondeSaudavel = filtros.saudavel
+      ? produto.categoria?.saudavel
+      : true;
+
+    return correspondeCategoria && correspondePreco && correspondeSaudavel;
+  });
+
+  // Atualiza os filtros a partir da sidebar
+  function handleFiltrar(novosFiltros: {
+    categoriaId?: number;
+    precoMax?: number;
+    saudavel?: boolean;
+  }) {
+    setFiltros(novosFiltros);
+  }
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col lg:flex-row gap-6 items-start">
+    <div className="w-full min-h-screen" style={{ backgroundColor: "#f5f5dc" }}>
+      <div className="px-4 py-6 lg:px-12 flex gap-6">
+        {/* Sidebar */}
+        <Sidebar categorias={categoriasUnicas} onFiltrar={handleFiltrar} />
 
-        <div className="w-full lg:w-auto">
-          <button
-            onClick={() => setMostrarSaudaveis(!mostrarSaudaveis)}
-            className={`px-3 py-2 text-sm rounded 
-      ${mostrarSaudaveis ? 'bg-gray-400' : 'bg-green-500'} 
-      text-white hover:opacity-90 min-w-[140px] flex items-center gap-2`}
-          >
-            <LeafIcon weight="bold" size={18} />
-            {mostrarSaudaveis ? 'Mostrar Todos' : 'Saudáveis'}
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 auto-rows-fr">
-          {produtos
-            .filter((produto) =>
-              (!mostrarSaudaveis || produto.categoria?.saudavel) &&
-              (!categoria || produto.categoria?.nome === categoria)
-            )
-            .map((produto) => (
-              <div
-                key={produto.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden relative flex flex-col h-full"
-              >
-                <div className="p-4 flex-1 flex flex-col">
-                  <p className="mt-2 text-gray-700">{produto.categoria?.nome}</p>
-                  <div className="flex justify-center mt-4">
+        {/* Conteúdo dos produtos */}
+        <div className="flex-1">
+          {produtosFiltrados.length === 0 ? (
+            <p className="text-center text-gray-600">Nenhum produto encontrado.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
+              {produtosFiltrados.map((produto) => (
+                <div
+                  key={produto.id}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full"
+                >
+                  <div className="flex justify-center items-center h-48 bg-gray-100">
                     <img
                       src={produto.foto}
                       alt={produto.nome}
-                      className="w-50 h-50 rounded-full border-2 border-gray-200"
+                      className="max-h-full max-w-full object-contain"
                     />
                   </div>
 
-                  <div className="flex flex-col flex-1 justify-between">
+                  <div className="p-4 flex flex-col flex-1 justify-between">
                     <div>
                       <h4 className="text-xl font-bold">{produto.nome}</h4>
                       <p className="mt-2 text-gray-700">{produto.descricao}</p>
                     </div>
                     <p className="mt-2 text-green-600 font-semibold">
-                      R$ {produto.preco || "0.00"}
+                      R$ {Number(produto.preco).toFixed(2)}
                     </p>
                   </div>
-                </div>
 
-                <div className="flex justify-center p-4">
-                  <button
-                    onClick={() => {
-                      adicionarAoCarrinho({ ...produto, quantidade: 1 });
-                      ToastAlerta(`"${produto.nome}" adicionado ao carrinho!`, 'sucesso');
-                    }}
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                  >
-                    Adicionar ao Carrinho
-                  </button>
+                  <div className="flex justify-center p-4">
+                    <button
+                      onClick={() => {
+                        adicionarAoCarrinho({ ...produto, quantidade: 1 });
+                        ToastAlerta(
+                          `"${produto.nome}" adicionado ao carrinho!`,
+                          "sucesso"
+                        );
+                      }}
+                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                    >
+                      Adicionar ao Carrinho
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
