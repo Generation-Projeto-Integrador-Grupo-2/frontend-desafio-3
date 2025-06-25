@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import type Produto from "../../models/Produto";
 import { AuthContext } from "../../contexts/AuthContext";
 import { buscar } from "../../service/Service";
-import { ToastAlerta } from "../../utils/ToastAlerta";
 import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { toast } from "react-toastify";
@@ -84,6 +83,8 @@ export default function ListaProdutos() {
     setFiltros(novosFiltros);
   }
 
+  const pastelColors = ["#C9E4C5", "#FCE5C1", "#FFB2AB", "#D6E9C6","#AED9E0", "#D0E6A5"];
+
   return (
     <div className="w-full min-h-screen" style={{ backgroundColor: "#f5f5dc" }}>
       <div className="px-4 py-6 lg:px-12 flex gap-6">
@@ -94,42 +95,48 @@ export default function ListaProdutos() {
             <p className="text-center text-gray-600">Nenhum produto encontrado.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-              {produtosFiltrados.map((produto) => (
-                <div
-                  key={produto.id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full"
-                >
-                  <div className="flex justify-center items-center h-48 bg-gray-100">
-                    <img
-                      src={produto.foto}
-                      alt={produto.nome}
-                      className="max-h-full max-w-full object-contain"
-                    />
-                  </div>
+              {produtosFiltrados.map((produto, index) => {
+                const corCard = pastelColors[index % pastelColors.length];
 
-                  <div className="p-4 flex flex-col flex-1 justify-between">
-                    <div>
-                      <h4 className="text-xl font-bold">{produto.nome}</h4>
-                      <p className="mt-2 text-gray-700">{produto.descricao}</p>
+                return (
+                  <div
+                    key={produto.id}
+                    className="rounded-lg shadow-lg overflow-hidden flex flex-col h-full"
+                    style={{ backgroundColor: corCard }}
+                  >
+                    <div className="flex justify-center items-center h-48 bg-white">
+                      <img
+                        src={produto.foto}
+                        alt={produto.nome}
+                        className="max-h-full max-w-full object-contain"
+                      />
                     </div>
-                    <p className="mt-2 text-green-600 font-semibold">
-                      R$ {Number(produto.preco).toFixed(2)}
-                    </p>
-                  </div>
 
-                  <div className="flex justify-center p-4">
-                    <button 
-                      onClick={() => {
-                        adicionarAoCarrinho({ ...produto, quantidade: 1 });
-                         toast.success(`${produto.nome} adicionado ao carrinho!`);
-                      }}
-                      className="bg-green-600 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300 cursor-pointer"
-                    >
-                      Adicionar ao Carrinho
-                    </button>
+                    <div className="p-4 flex flex-col flex-1 justify-between text-[#2F3E46]">
+                      <div>
+                        
+                        <h4 className="text-xl font-bold">{produto.nome}</h4>
+                        <p className="mt-2 text-gray-700">{produto.descricao}</p>
+                      </div>
+                        <p className="font-bold mb-2 text-[#2F3E46] text-2xl">
+                        R$ {Number(produto.preco).toFixed(2)}
+                        </p>
+                    </div>
+
+                    <div className="flex justify-center p-4">
+                      <button
+                        onClick={() => {
+                          adicionarAoCarrinho({ ...produto, quantidade: 1 });
+                          toast.success(`${produto.nome} adicionado ao carrinho!`);
+                        }}
+                        className="bg-green-600 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300 cursor-pointer"
+                      >
+                        Adicionar ao Carrinho
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

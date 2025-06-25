@@ -6,29 +6,36 @@ function Home() {
   const navigate = useNavigate();
   const { adicionarAoCarrinho } = useCarrinho();
 
-  const promocoes = [
-    {
-      id: 1,
-      nome: "Espaguete de abobrinha",
-      precoOriginal: 49.9,
-      precoPromocional: 29.9,
-      imagem: "./assets/img/espaguete-abobrinha.jpg",
-    },
-    {
-      id: 2,
-      nome: "Lasanha ao Molho Branco",
-      precoOriginal: 35.9,
-      precoPromocional: 27.9,
-      imagem: "./assets/img/lasanha-molho-branco.jpg",
-    },
-    {
-      id: 3,
-      nome: "X-Tudo",
-      precoOriginal: 64.9,
-      precoPromocional: 34.9,
-      imagem: "./assets/img/x-tudo.jpg",
-    },
-  ];
+ const promocoes = [
+  {
+    id: 1,
+    nome: "Espaguete de abobrinha",
+    precoOriginal: 49.9,
+    precoPromocional: 29.9,
+    imagem: "https://ik.imagekit.io/6tjnbersb/Espaguete-de-Abobrinha-com-Molho-de-Tomate-e-Manjericao-1-1200x675.jpg?updatedAt=1750878978575",
+  },
+  {
+    id: 2,
+    nome: "Lasanha ao molho branco",
+    precoOriginal: 35.9,
+    precoPromocional: 27.9,
+    imagem: "https://ik.imagekit.io/6tjnbersb/lasanhacommolhobranco.jpg?updatedAt=1750878978308",
+  },
+  {
+    id: 3,
+    nome: "X-Tudo de pernil",
+    precoOriginal: 64.9,
+    precoPromocional: 34.9,
+    imagem: "https://ik.imagekit.io/6tjnbersb/x-tudo-de-pernil.jpg?updatedAt=1750878978740",
+  },
+  {
+    id: 4,
+    nome: "Salada Caesar",
+    precoOriginal: 32.9,
+    precoPromocional: 8.90,
+    imagem: "https://ik.imagekit.io/6tjnbersb/salada-caesar-para-4-pessoas.jpg?updatedAt=1750887964352",
+  },
+];
 
   const categorias = [
     {
@@ -45,7 +52,7 @@ function Home() {
     },
     {
       id: 3,
-      nome: "Produtos Saudáveis",
+      nome: "Produtos saudáveis",
       cor: "#A3C293",
       imagem: "https://ik.imagekit.io/6tjnbersb/fruits.png?updatedAt=1750838224726"
     },
@@ -61,7 +68,7 @@ function Home() {
       cor: "#72DD96",
       imagem: "https://ik.imagekit.io/6tjnbersb/proteinbar.png?updatedAt=1750838702822"
     },
-     {
+    {
       id: 4,
       nome: "Bebidas",
       cor: "#A8DADC",
@@ -116,7 +123,7 @@ function Home() {
             </p>
             <button
               onClick={handlePeçaAgora}
-              className="bg-[#ff6961] hover:bg-green-600 text-[#f5f5dc] px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition duration-300"
+              className="bg-[#ff6961] hover:bg-green-600 text-[#f5f5dc] px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition duration-300 cursor-pointer"
             >
               Peça agora
             </button>
@@ -168,36 +175,63 @@ function Home() {
         >
           Promoções do Dia
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {promocoes.map((produto) => (
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+          {promocoes.map((produto, index) => {
+
+        const pastelColors = ["#C9E4C5", "#FCE5C1", "#FFB2AB", "#D6E9C6"];
+        const corCard = pastelColors[index % pastelColors.length];
+
+        return (
+          <div
+            key={produto.id}
+            className="flex flex-col items-stretch cursor-pointer transition hover:scale-105 h-full"
+            style={{ maxWidth: "220px", margin: "0 auto" }}
+            onClick={() => handleAdicionarIndividual(produto)}
+          >
             <div
-              key={produto.id}
-              className="border border-[#A3C293] rounded-2xl shadow-md overflow-hidden transition hover:scale-105"
+          className="w-full h-32 rounded-2xl shadow-md overflow-hidden bg-white flex-shrink-0"
             >
-              <img
-                src={produto.imagem}
-                alt={produto.nome}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{produto.nome}</h3>
-                <p className="text-gray-500 line-through">
-                  R$ {produto.precoOriginal.toFixed(2)}
-                </p>
-                <p className="text-green-600 text-xl font-bold mb-4">
-                  R$ {produto.precoPromocional.toFixed(2)}
-                </p>
-                <button
-                  onClick={() => handleAdicionarIndividual(produto)}
-                  className="bg-green-600 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300 cursor-pointer w-full"
-                >
-                  Adicionar ao Carrinho
-                </button>
-              </div>
+          <img
+            src={produto.imagem}
+            alt={produto.nome}
+            className="w-full h-full object-cover rounded-2xl"
+          />
             </div>
-          ))}
+
+            <div
+          className="flex flex-col justify-between mt-3 text-center rounded-b-2xl p-4 w-full flex-1"
+          style={{ backgroundColor: corCard, minHeight: "180px", display: "flex" }}
+            >
+          <div>
+            <h3 className="text-md font-semibold text-[#2F3E46] mb-1">
+              {produto.nome}
+            </h3>
+            <p className="text-sm text-gray-500 line-through mb-1">
+              R$ {produto.precoOriginal.toFixed(2)}
+            </p>
+            <p className="font-bold text-lg mb-2 text-[#2F3E46]">
+              R$ {produto.precoPromocional.toFixed(2)}
+            </p>
+          </div>
+
+          <button
+            className="bg-green-600 hover:bg-[#ff6961] text-white px-4 py-2 rounded-full text-sm font-medium transition duration-300 w-full cursor-pointer mt-4"
+            style={{ marginTop: "auto" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAdicionarIndividual(produto);
+            }}
+          >
+            Adicionar ao carrinho
+          </button>
+            </div>
+          </div>
+        );
+          })}
         </div>
       </div>
+
 
       <div className="px-4 md:px-16 py-16" style={{ backgroundColor: '#f5f5dc' }}>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10">
@@ -222,7 +256,7 @@ function Home() {
             </p>
             <button
               onClick={() => navigate("/sobre")}
-              className="bg-[#ff6961] hover:bg-green-600 text-[#f5f5dc] px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300"
+              className="bg-[#ff6961] hover:bg-green-600 text-[#f5f5dc] px-8 py-3 rounded-full text-lg font-semibold shadow-lg transition duration-300 cursor-pointer"
             >
               Saiba mais
             </button>
