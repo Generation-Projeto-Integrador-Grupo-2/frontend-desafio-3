@@ -1,55 +1,73 @@
-import { GithubLogoIcon } from "@phosphor-icons/react";
+import { GithubLogoIcon, InstagramLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react"
+import { Link } from "react-router-dom"
 
-function Footer() {
-  const year = new Date().getFullYear();
+export default function Footer() {
+  let data = new Date().getFullYear()
 
   return (
-    <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Courgette&display=swap"
-        rel="stylesheet"
-      />
-
-      <footer>
-        <div
-          style={{ backgroundColor: '#FF6961', color: '#F5F5DC' }}
-          className="px-4 py-6 text-center flex flex-col items-center gap-2"
-        >
-          <h2
-            className="text-xl font-semibold underline"
-            style={{ fontFamily: 'Courgette, cursive', color: '#F5F5DC' }}
+    <div className="flex justify-center bg-[#2F3E46] text-[#f5f5dc]">
+      <div className="container flex flex-col py-4 px-4">
+        <div className="flex flex-col items-start gap-4">
+          {/* Logo */}
+          <span
+            className="text-3xl font-bold"
+            style={{
+              fontFamily: 'Courgette, cursive',
+              color: '#F5F5DC',
+              textDecoration: 'underline',
+            }}
           >
-            rebU Eats
-          </h2>
+            <Link to="/home" className="hover:text-green-300 transition-colors">
+              rebU Eats
+            </Link>
+          </span>
 
-          <p className="text-sm">
-            Sua refeição favorita, com um clique.
-          </p>
+          {/* Redes Sociais */}
+          <div className="flex flex-col">
+            <div className="flex gap-3 mt-1">
+              <a
+                href="https://github.com/Generation-Projeto-Integrador-Grupo-2/desafio1_front_end"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-[#f5f5dc] flex items-center justify-center transition duration-300 hover:bg-[#e0e0cc] hover:shadow-lg hover:scale-110"
+              >
+                <GithubLogoIcon size={27} weight="fill" color="#2F3E46" />
+              </a>
+              <a
+                href="https://github.com/Generation-Projeto-Integrador-Grupo-2/desafio1_front_end"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-[#f5f5dc] flex items-center justify-center transition duration-300 hover:bg-[#e0e0cc] hover:shadow-lg hover:scale-110"
+              >
+                <InstagramLogoIcon size={27} weight="fill" color="#2F3E46" />
+              </a>
+              <a
+                href="https://github.com/Generation-Projeto-Integrador-Grupo-2/desafio1_front_end"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-[#f5f5dc] flex items-center justify-center transition duration-300 hover:bg-[#e0e0cc] hover:shadow-lg hover:scale-110"
+              >
+                <LinkedinLogoIcon size={27} weight="fill" color="#2F3E46" />
+              </a>
+            </div>
+          </div>
 
-          <a
-            href="https://github.com/Generation-Projeto-Integrador-Grupo-2/frontend-desafio-3"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="mt-2 transition-colors"
-            style={{ color: '#F5F5DC' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#F5F5DC')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#F5F5DC')}
-            onMouseDown={(e) => (e.currentTarget.style.color = '#32CD32')} 
-            onMouseUp={(e) => (e.currentTarget.style.color = '#F5F5DC')}    
-          >
-            <GithubLogoIcon size={28} weight="fill" />
-          </a>
+          {/* Informações de contato */}
+          <div className="mt-2">
+            <p className="mb-1">📍 Av. Paulista, 100 - Bela Vista, São Paulo - SP 01310-000</p>
+            <p className="mb-1">📞 (11) 0000-0000</p>
+            <p className="mb-4">✉️ contato@rebueats.com</p>
+          </div>
+        </div>
 
-          <p className="text-sm mt-4" style={{ color: '#F5F5DC' }}>
-            &copy; {year} rebU Eats. Todos os direitos reservados.
+        {/* Linha e copyright */}
+        <div className="w-full h-0.5 bg-[#f5f5dc] mt-3 rounded-full" />
+        <div className="w-full flex justify-center mt-4 text-[#f5f5dc]">
+          <p className="text-center text-sm font-normal">
+            rebUEats © {data}. All Rights Reserved
           </p>
         </div>
-      </footer>
-    </>
-  );
+      </div>
+    </div>
+  )
 }
-
-export default Footer;
