@@ -91,7 +91,6 @@ function Home() {
 
   return (
     <div className="w-full">
-      {/* HERO */}
       <div
         className="w-full bg-cover bg-center bg-no-repeat"
         style={{
@@ -125,8 +124,6 @@ function Home() {
         </div>
       </div>
 
-
-      {/* Seção de Categorias */}
       <div className="py-12 px-4 md:px-16 bg-[#f5f5dc]">
         <h2
           className="text-3xl font-bold text-left mb-10 text-[#2F3E46]"
@@ -142,7 +139,7 @@ function Home() {
               className="flex flex-col items-center cursor-pointer transition hover:scale-105"
               style={{ maxWidth: "200px" }}
             >
-              {/* Área com fundo colorido e imagem */}
+
               <div
                 className="w-full flex items-center justify-center rounded-2xl shadow-md h-28 overflow-hidden"
                 style={{ backgroundColor: categoria.cor }}
@@ -154,7 +151,6 @@ function Home() {
                 />
               </div>
 
-              {/* Texto abaixo da área colorida */}
               <div className="mt-2 text-center">
                 <span className="text-md font-semibold text-[#2F3E46] block">
                   {categoria.nome}
@@ -165,7 +161,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Seção de Promoções */}
       <div className="py-12 px-4 md:px-16 bg-[#f5f5dc]">
         <h2
           className="text-3xl font-bold text-left mb-10 text-[#2F3E46]"
@@ -194,7 +189,7 @@ function Home() {
                 </p>
                 <button
                   onClick={() => handleAdicionarIndividual(produto)}
-                  className="bg-green-600 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300 w-full"
+                  className="bg-green-600 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300 cursor-pointer w-full"
                 >
                   Adicionar ao Carrinho
                 </button>
@@ -204,11 +199,9 @@ function Home() {
         </div>
       </div>
 
-      {/* Seção Sobre a rebU Eats */}
       <div className="px-4 md:px-16 py-16" style={{ backgroundColor: '#f5f5dc' }}>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10">
 
-          {/* Espaço para imagem */}
           <div className="w-full md:w-1/2">
             <img
               src="https://ik.imagekit.io/6tjnbersb/woman_receiving_grocery_order.jpg?updatedAt=1750830333205"
@@ -217,7 +210,6 @@ function Home() {
             />
           </div>
 
-          {/* Texto de apresentação */}
           <div className="w-full md:w-1/2 text-left text-[#2F3E46]">
             <h2
               className="text-4xl font-bold mb-6"

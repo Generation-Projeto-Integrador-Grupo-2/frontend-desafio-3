@@ -4,8 +4,9 @@ import type Produto from "../../models/Produto";
 import { AuthContext } from "../../contexts/AuthContext";
 import { buscar } from "../../service/Service";
 import { ToastAlerta } from "../../utils/ToastAlerta";
-import { useCarrinho } from "../../components/carrinho/CarrinhoContext";// ajuste o caminho se necessário
+import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
 import Sidebar from "../../components/sidebar/Sidebar";
+import { toast } from "react-toastify";
 
 export default function ListaProdutos() {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ export default function ListaProdutos() {
 
   const { adicionarAoCarrinho } = useCarrinho();
 
-  // Estados para os filtros
   const [filtros, setFiltros] = useState<{
     categoriaId?: number;
     precoMax?: number;
@@ -43,7 +43,7 @@ export default function ListaProdutos() {
 
   useEffect(() => {
     if (token === "") {
-      ToastAlerta("Você precisa estar logado", "erro");
+      toast.error("Você precisa estar logado para acessar esta página.");
       navigate("/");
     }
   }, [token]);
@@ -52,7 +52,6 @@ export default function ListaProdutos() {
     buscarProdutos();
   }, []);
 
-  // Extrair categorias únicas dos produtos para passar na Sidebar
   const categoriasUnicas = Array.from(
     new Map(
       produtos
@@ -61,19 +60,15 @@ export default function ListaProdutos() {
     ).values()
   );
 
-  // Aplica os filtros na lista de produtos
   const produtosFiltrados = produtos.filter((produto) => {
-    // filtro categoria pelo id da url ou filtro da sidebar
     const correspondeCategoria = filtros.categoriaId
       ? produto.categoria?.id === filtros.categoriaId
       : true;
 
-    // filtro preço máximo
     const precoNum = Number(produto.preco);
     const correspondePreco =
       filtros.precoMax !== undefined ? precoNum <= filtros.precoMax : true;
 
-    // filtro saudável
     const correspondeSaudavel = filtros.saudavel
       ? produto.categoria?.saudavel
       : true;
@@ -81,7 +76,6 @@ export default function ListaProdutos() {
     return correspondeCategoria && correspondePreco && correspondeSaudavel;
   });
 
-  // Atualiza os filtros a partir da sidebar
   function handleFiltrar(novosFiltros: {
     categoriaId?: number;
     precoMax?: number;
@@ -93,10 +87,8 @@ export default function ListaProdutos() {
   return (
     <div className="w-full min-h-screen" style={{ backgroundColor: "#f5f5dc" }}>
       <div className="px-4 py-6 lg:px-12 flex gap-6">
-        {/* Sidebar */}
         <Sidebar categorias={categoriasUnicas} onFiltrar={handleFiltrar} />
 
-        {/* Conteúdo dos produtos */}
         <div className="flex-1">
           {produtosFiltrados.length === 0 ? (
             <p className="text-center text-gray-600">Nenhum produto encontrado.</p>
@@ -126,15 +118,12 @@ export default function ListaProdutos() {
                   </div>
 
                   <div className="flex justify-center p-4">
-                    <button
+                    <button 
                       onClick={() => {
                         adicionarAoCarrinho({ ...produto, quantidade: 1 });
-                        ToastAlerta(
-                          `"${produto.nome}" adicionado ao carrinho!`,
-                          "sucesso"
-                        );
+                         toast.success(`${produto.nome} adicionado ao carrinho!`);
                       }}
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300"
+                      className="bg-green-600 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300 cursor-pointer"
                     >
                       Adicionar ao Carrinho
                     </button>
