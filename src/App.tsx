@@ -9,7 +9,6 @@ import Login from './pages/login/Login';
 import Cadastro from './pages/cadastro/Cadastro';
 import Home from './pages/home/Home';
 import About from './pages/About';
-import Empresas from './pages/empresas/Empresas';
 import Restaurantes from './components/restaurantes/Restaurantes';
 import CarrinhoPage from './components/carrinho/Carrinho';
 import ListaCategorias from './pages/categorias/ListaCategorias';
@@ -18,6 +17,7 @@ import DeletarCategorias from './components/categorias/deletarcategorias/Deletar
 import FormProdutos from './components/produtos/formprodutos/FormProdutos';
 import DeletarProdutos from './components/produtos/deletarprodutos/DeletarProdutos';
 import ListaProdutos from './pages/produtos/ListaProdutos';
+import Empresa from './pages/empresa/Empresa';
 
 function AppContent() {
   const location = useLocation();
@@ -37,7 +37,6 @@ function AppContent() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/home" element={<Home />} />
           <Route path="/sobre" element={<About />} />
-          <Route path="/empresas" element={<Empresas />} />
           <Route path="/restaurantes" element={<Restaurantes />} />
           <Route path="/carrinho" element={<CarrinhoPage />} />
           <Route path="/produtos" element={<ListaProdutos />} />
@@ -49,6 +48,7 @@ function AppContent() {
           <Route path="/categorias/cadastrar" element={<CadastroCategorias />} />
           <Route path="/editarcategorias/:id" element={<CadastroCategorias />} />
           <Route path="/deletarcategorias/:id" element={<DeletarCategorias />} />
+          <Route path="/empresa" element={<Empresa />} />
         </Routes>
       </div>
       {!hideNavAndFooter && <Footer />}
