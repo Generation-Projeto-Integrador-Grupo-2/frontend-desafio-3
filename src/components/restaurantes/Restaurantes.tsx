@@ -15,31 +15,44 @@ const restaurantes: Restaurante[] = [
 ];
 
 export default function Restaurantes() {
+  const pastelColors = ["#C9E4C5", "#FCE5C1", "#FFB2AB", "#D6E9C6"];
+
   return (
-    <section className="mb-16">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+    <section
+      className="py-12 min-h-[calc(100vh-120px)]"
+      style={{ backgroundColor: "#f5f5dc" }}
+    >
+      <h2
+        className="text-2xl font-bold text-gray-800 mb-8 text-center"
+        style={{ fontFamily: "Courgette, cursive" }}
+      >
+        Restaurantes Parceiros
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {restaurantes.map((restaurante) => (
-          <div
-            key={restaurante.id}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-          >
-            <div className="overflow-hidden">
-              <img
-                src={restaurante.imagem}
-                alt={restaurante.nome}
-                className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-              />
+        {restaurantes.map((restaurante, index) => {
+          const corCard = pastelColors[index % pastelColors.length];
+          return (
+            <div
+              key={restaurante.id}
+              className="rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col items-stretch"
+              style={{ backgroundColor: corCard }}
+            >
+              <div className="overflow-hidden w-full h-48">
+                <img
+                  src={restaurante.imagem}
+                  alt={restaurante.nome}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <div className="p-4 text-center flex-1 flex flex-col justify-center">
+                <h3 className="text-lg font-semibold text-[#2F3E46]">
+                  {restaurante.nome}
+                </h3>
+              </div>
             </div>
-            <div className="p-4 text-center">
-              <h3 className="text-lg font-semibold text-gray-800">
-                {restaurante.nome}
-              </h3>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

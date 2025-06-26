@@ -7,7 +7,12 @@ import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { toast } from "react-toastify";
 
-export default function ListaProdutos() {
+interface ListaProdutosProps {
+  categoria?: string;
+}
+
+// Altere a declaração do componente:
+export default function ListaProdutos({ categoria }: ListaProdutosProps) {
   const navigate = useNavigate();
   const { id } = useParams();
   const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -83,7 +88,7 @@ export default function ListaProdutos() {
     setFiltros(novosFiltros);
   }
 
-  const pastelColors = ["#C9E4C5", "#FCE5C1", "#FFB2AB", "#D6E9C6","#AED9E0", "#D0E6A5"];
+  const pastelColors = ["#C9E4C5", "#FCE5C1", "#FFB2AB", "#D6E9C6", "#AED9E0", "#D0E6A5"];
 
   return (
     <div className="w-full min-h-screen" style={{ backgroundColor: "#f5f5dc" }}>
@@ -114,13 +119,13 @@ export default function ListaProdutos() {
 
                     <div className="p-4 flex flex-col flex-1 justify-between text-[#2F3E46]">
                       <div>
-                        
+
                         <h4 className="text-xl font-bold">{produto.nome}</h4>
                         <p className="mt-2 text-gray-700">{produto.descricao}</p>
                       </div>
-                        <p className="font-bold mb-2 text-[#2F3E46] text-2xl">
+                      <p className="font-bold mb-2 text-[#2F3E46] text-2xl">
                         R$ {Number(produto.preco).toFixed(2)}
-                        </p>
+                      </p>
                     </div>
 
                     <div className="flex justify-center p-4">
