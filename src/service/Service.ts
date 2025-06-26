@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://backend-desafio-3.onrender.com/", headers: {
+    baseURL: import.meta.env.VITE_API_URL, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
