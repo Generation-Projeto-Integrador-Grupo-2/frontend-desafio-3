@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { buscar } from "../../service/Service";
 import { ToastAlerta } from "../../utils/ToastAlerta";
 import { DNA } from "react-loader-spinner";
+
 export default function ListaCategorias() {
     const navigate = useNavigate();
     const [categorias, setCategorias] = useState<Categoria[]>([])

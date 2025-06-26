@@ -1,12 +1,17 @@
-import { createContext, type ReactNode, useState, useEffect } from "react";
-import type { UsuarioLogin } from "../models/UsuarioLogin";
-import { ToastAlerta } from "../utils/ToastAlerta";
+// contexts/AuthContext.tsx
+import { createContext, useState, useEffect, type ReactNode } from "react";
 import { login } from "../service/Service";
+import { ToastAlerta } from "../utils/ToastAlerta";
+import type { UsuarioLogin } from "../models/UsuarioLogin";
+import type { EmpresaLogin } from "../models/EmpresaLogin";
 
 interface AuthContextProps {
-  usuario: UsuarioLogin;
+  usuario?: UsuarioLogin;
+  empresa?: EmpresaLogin;
+  tipo: 'usuario' | 'empresa' | '';
+  handleLoginUsuario(usuario: UsuarioLogin): Promise<void>;
+  handleLoginEmpresa(empresa: EmpresaLogin): Promise<void>;
   handleLogout(): void;
-  handleLogin(usuario: UsuarioLogin): Promise<void>;
   isLoading: boolean;
 }
 
@@ -17,37 +22,73 @@ interface AuthProviderProps {
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [usuario, setUsuario] = useState<UsuarioLogin>(() => {
-    const usuarioLocal = localStorage.getItem("usuario");
-    return usuarioLocal
-      ? JSON.parse(usuarioLocal)
-      : { id: 0, nome: "", email: "", senha: "", token: "" };
+  const [usuario, setUsuario] = useState<UsuarioLogin | undefined>(() => {
+    const local = localStorage.getItem("usuario");
+    return local ? JSON.parse(local) : undefined;
+  });
+
+  const [empresa, setEmpresa] = useState<EmpresaLogin | undefined>(() => {
+    const local = localStorage.getItem("empresa");
+    return local ? JSON.parse(local) : undefined;
+  });
+
+  const [tipo, setTipo] = useState<'usuario' | 'empresa' | ''>(() => {
+    return localStorage.getItem("tipo") as 'usuario' | 'empresa' | '' || '';
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("usuario", JSON.stringify(usuario));
-  }, [usuario]);
+    if (usuario) localStorage.setItem("usuario", JSON.stringify(usuario));
+    if (empresa) localStorage.setItem("empresa", JSON.stringify(empresa));
+    localStorage.setItem("tipo", tipo);
+  }, [usuario, empresa, tipo]);
 
-  async function handleLogin(usuarioLogin: UsuarioLogin) {
+  async function handleLoginUsuario(usuarioLogin: UsuarioLogin) {
     setIsLoading(true);
     try {
-      await login(`/usuarios/logar`, usuarioLogin, setUsuario);
-      ToastAlerta("Usuário foi autenticado com sucesso!", "sucesso");
-    } catch (error) {
-      ToastAlerta("Os dados do Usuário estão inconsistentes!", "erro");
+      await login("/usuarios/logar", usuarioLogin, setUsuario);
+      setTipo("usuario");
+      ToastAlerta("Usuário autenticado com sucesso!", "sucesso");
+    } catch {
+      ToastAlerta("Erro ao autenticar o usuário!", "erro");
+    }
+    setIsLoading(false);
+  }
+
+  async function handleLoginEmpresa(empresaLogin: EmpresaLogin) {
+    setIsLoading(true);
+    try {
+      await login("/empresas/logar", empresaLogin, setEmpresa);
+      setTipo("empresa");
+      ToastAlerta("Empresa autenticada com sucesso!", "sucesso");
+    } catch {
+      ToastAlerta("Erro ao autenticar a empresa!", "erro");
     }
     setIsLoading(false);
   }
 
   function handleLogout() {
-    setUsuario({ id: 0, nome: "", email: "", senha: "", token: "" });
+    setUsuario(undefined);
+    setEmpresa(undefined);
+    setTipo('');
     localStorage.removeItem("usuario");
+    localStorage.removeItem("empresa");
+    localStorage.removeItem("tipo");
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, handleLogin, handleLogout, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        usuario,
+        empresa,
+        tipo,
+        handleLoginUsuario,
+        handleLoginEmpresa,
+        handleLogout,
+        isLoading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

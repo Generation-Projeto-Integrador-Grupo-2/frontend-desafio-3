@@ -15,10 +15,11 @@ import DeletarCategorias from './components/categorias/deletarcategorias/Deletar
 import About from './pages/About'
 import Navbar from './components/navbar/Navbar'
 import Footer from './components/footer/Footer'
+import CadastroEmpresa from './pages/cadastroempresa/CadastroEmpresa'
 
 function AppContent() {
   const location = useLocation()
-  const hideNavAndFooter = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/cadastro'
+  const hideNavAndFooter = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/cadastro' || location.pathname === '/empresas'
 
   return (
     <>
@@ -28,6 +29,7 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/empresas" element={<CadastroEmpresa />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/restaurantes" element={<Restaurantes />} />

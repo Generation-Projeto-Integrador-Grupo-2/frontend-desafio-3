@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: 'https://backend-desafio-3.onrender.com',  headers: {
+    baseURL: 'http://localhost:8080',  headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
@@ -9,18 +9,26 @@ export const api = axios.create({
 
 export const cadastrarUsuario = async (url: string, dados: Object, setDados: Function) => {
     const resposta = await api.post(url, dados);
-    //setDados(resposta.data);
 
     const usuario = resposta.data;
     
-    // Remove o campo senha (que está com token)
     delete usuario.senha;
     
-    // Agora atualiza o estado com o objeto limpo
     setDados(usuario);
 
     
 }
+
+export const cadastrarEmpresa = async (url: string, dados: Object, setDados: Function) => {
+    const resposta = await api.post(url, dados);
+
+    const empresa = resposta.data;
+
+    delete empresa.senha;
+
+    setDados(empresa);
+};
+
 
 export const login = async (url: string, dados: Object, setDados: Function) => {
     const resposta = await api.post(url, dados)
