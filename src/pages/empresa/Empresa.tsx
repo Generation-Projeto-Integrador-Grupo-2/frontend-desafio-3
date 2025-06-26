@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Produto {
@@ -76,7 +76,7 @@ export default function Empresa() {
     setNomeProduto("");
     setNomeEmpresa("");
     setDescricao("");
-    setPreco(0);
+    setPreco(0.00);
     setFoto("");
     setCategoria("Saudável");
   };
@@ -108,8 +108,6 @@ export default function Empresa() {
       </div>
 
       <main className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg -mt-28 relative z-20">
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Nome do Produto</label>

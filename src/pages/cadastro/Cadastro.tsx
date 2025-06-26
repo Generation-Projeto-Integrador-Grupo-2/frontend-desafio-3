@@ -146,22 +146,22 @@ function Cadastro() {
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                             />
                         </div>
-                        <div className="flex justify-around w-full gap-8 m-4">
-
+                        <div className="flex justify-center w-full m-4">
                             <button
                                 type='submit'
-                                className='bg-green-400 hover:bg-green-500 font-medium text-sm py-2 rounded-lg p-4 text-black '
+                                className='bg-green-400 hover:bg-green-500 font-medium text-sm py-2 rounded-lg p-4 text-black'
                             >
-                                {
-                                    isLoading ? <RotatingLines
+                                {isLoading ? (
+                                    <RotatingLines
                                         strokeColor='white'
                                         strokeWidth='5'
                                         animationDuration='0.75'
                                         width='24'
                                         visible={true}
-                                    /> :
-                                        <span>Cadastrar</span>
-                                }
+                                    />
+                                ) : (
+                                    <span>Cadastrar</span>
+                                )}
                             </button>
                         </div>
 

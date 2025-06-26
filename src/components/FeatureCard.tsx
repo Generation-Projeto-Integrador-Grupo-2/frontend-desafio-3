@@ -4,14 +4,18 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  cor: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, cor }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 text-center">
+    <div
+      className="rounded-lg shadow-md p-4 text-center transition duration-300"
+      style={{ backgroundColor: cor }}
+    >
       <div className="mb-2 flex justify-center">{icon}</div>
-      <h3 className="font-bold text-lg text-gray-800">{title}</h3>
-      <p className="text-sm text-gray-600">{description}</p>
+      <h3 className="font-bold text-lg text-[#2F3E46]">{title}</h3>
+      <p className="text-sm text-[#2F3E46]">{description}</p>
     </div>
   );
 };

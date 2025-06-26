@@ -11,6 +11,7 @@ const restaurantes: Restaurante[] = [
   { id: 4, nome: "Restaurante e Creperia Vida's Crepe", imagem: "./assets/img/crespes-cia.jpg" },
   { id: 5, nome: "Kombinado Restaurante", imagem: "./assets/img/kombinado-burguer.jpg" },
   { id: 6, nome: "Casa do Norte Tradição", imagem: "./assets/img/casa-tradicao.jpg" },
+  { id: 7, nome: "Empresa1", imagem: "https://ik.imagekit.io/6tjnbersb/Produtos/images.png?updatedAt=1750910388237" },
 ];
 
 export default function Restaurantes() {

@@ -3,24 +3,28 @@ import { CheckCircle, Users, Shield, Cpu, DollarSign } from "lucide-react";
 
 const features = [
   {
-    icon: <CheckCircle className="text-red-600 w-8 h-8" />,
+    icon: <CheckCircle className="text-[#ff6961] w-8 h-8" />,
     title: "Ética",
     description: "Zero comissões, 100% do valor para os produtores.",
+    cor: "#FCE5C1",
   },
   {
-    icon: <Users className="text-red-600 w-8 h-8" />,
+    icon: <Users className="text-[#ff6961] w-8 h-8" />,
     title: "Comunidade",
     description: "Rede solidária e colaborativa, baseada em trocas e apoio mútuo.",
+    cor: "#D6E9C6",
   },
   {
-    icon: <Shield className="text-red-600 w-8 h-8" />,
+    icon: <Shield className="text-[#ff6961] w-8 h-8" />,
     title: "Transparência",
     description: "Finanças abertas e modelo baseado em confiança e verdade.",
+    cor: "#E3F0FF",
   },
   {
-    icon: <Cpu className="text-red-600 w-8 h-8" />,
+    icon: <Cpu className="text-[#ff6961] w-8 h-8" />,
     title: "Tecnologia",
     description: "Ferramentas livres, acessíveis e de código aberto.",
+    cor: "#C9E4C5",
   },
 ];
 
@@ -28,17 +32,8 @@ const About = () => {
   return (
     <div style={{ backgroundColor: "#f5f5dc" }} className="w-full">
       <section className="max-w-6xl mx-auto py-10">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          Sobre a <span
-            className="text-4xl font-bold"
-            style={{
-              fontFamily: 'Courgette, cursive',
-              color: '#FF6961',
-              textDecoration: 'underline',
-            }}
-          >
-            rebU Eats
-          </span>
+        <h1 className="text-3xl font-bold text-center mb-2 text-[#2F3E46]" style={{ fontFamily: "'Courgette', cursive" }}>
+          Sobre a rebU Eats
         </h1>
         <p className="text-center text-gray-600 mb-10">
           Mais do que uma plataforma de delivery — uma proposta ética, social e colaborativa
@@ -71,7 +66,7 @@ const About = () => {
             Somos um projeto coletivo, sustentado por doações, apoio da comunidade e adesões éticas.
           </p>
 
-          <div className="bg-gradient-to-r from-red-600 to-green-600 text-white text-center font-semibold text-lg py-4 px-6 rounded">
+          <div className="bg-gradient-to-r from-[#ff6961] to-green-600 text-white text-center font-semibold text-lg py-4 px-6 rounded">
             "A comida é cultura, é memória, é cuidado. Ela une famílias, amigos e histórias."
           </div>
 
@@ -104,13 +99,13 @@ const About = () => {
             Cada clique, cada refeição, cada doação conta.
           </p>
 
-          <p className="text-center font-bold text-xl">
+          <p className="text-center font-bold text-xl text-[#2F3E46]">
             Comida não é só um produto — <br />
-            <span className="text-red-600">é um direito, é cultura, é partilha.</span>
+            <span className="text-[#ff6961]">é um direito, é cultura, é partilha.</span>
           </p>
 
           <div className="text-center">
-            <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full transition duration-300">
+            <button className="bg-[#ff6961] hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 cursor-pointer">
               Apoie o Projeto
             </button>
           </div>

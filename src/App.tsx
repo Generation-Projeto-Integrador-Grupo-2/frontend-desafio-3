@@ -18,6 +18,7 @@ import FormProdutos from './components/produtos/formprodutos/FormProdutos';
 import DeletarProdutos from './components/produtos/deletarprodutos/DeletarProdutos';
 import ListaProdutos from './pages/produtos/ListaProdutos';
 import Empresa from './pages/empresa/Empresa';
+import PopupIA from './components/popupia/PopupIA';
 
 function AppContent() {
   const location = useLocation();
@@ -51,6 +52,7 @@ function AppContent() {
           <Route path="/empresa" element={<Empresa />} />
         </Routes>
       </div>
+      {!hideNavAndFooter && <PopupIA />}
       {!hideNavAndFooter && <Footer />}
     </>
   );
