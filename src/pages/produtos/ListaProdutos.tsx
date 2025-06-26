@@ -18,6 +18,7 @@ export default function ListaProdutos({ categoria }: ListaProdutosProps) {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const { usuario, handleLogout } = useContext(AuthContext)!;
   const token = usuario.token;
+  console.log(categoria);
 
   const { adicionarAoCarrinho } = useCarrinho();
 

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useCarrinho } from "../../components/carrinho/CarrinhoContext";
-import { toast } from "react-toastify";
 
 function Home() {
   const navigate = useNavigate();
