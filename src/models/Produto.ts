@@ -1,9 +1,9 @@
 export default interface Produto {
-  categoria: any;
+  categoria?: any;
   id: number;
   nome: string;
   descricao: string;
   foto: string;
   preco: number;
-  empresa?: string; 
+  empresa?: string;
 }
